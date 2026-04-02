@@ -1,4 +1,4 @@
-import app from '@/infra/core/app'
+import app from '@/infra/http/app'
 import { env } from '@/infra/services/env'
 
 async function bootstrap() {

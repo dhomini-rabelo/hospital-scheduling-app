@@ -2,9 +2,9 @@
   "name": "backend",
   "type": "module",
   "version": "1.0.0",
-  "main": "src/infra/core/server.ts",
+  "main": "src/infra/http/server.ts",
   "scripts": {
-    "dev": "NODE_ENV=development tsx watch ./src/infra/core/server.ts"
+    "dev": "NODE_ENV=development tsx watch ./src/infra/http/server.ts"
   },
   "dependencies": {
     "express": "^5.1.0",
