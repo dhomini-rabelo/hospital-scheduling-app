@@ -5,9 +5,9 @@
     "./*"
   ],
   "scripts": {
-    "dev": "NODE_ENV=development tsx watch ./packages/infra/functions/src/__tests__/server.ts",
-    "lint:fix": "eslint ./packages --ext .ts --ignore-pattern ./packages/infra/web --ignore-pattern '*.d.ts' --fix",
-    "type-check": "tsc --noEmit --project tsconfig.json"
+    "dev": "",
+    "backend:lint:fix": "eslint ./ --ext .ts --ignore-pattern ./frontend --ignore-pattern '*.d.ts' --fix",
+    "backend:type-check": "tsc --noEmit --project tsconfig.json"
   },
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.2.2",
@@ -16,7 +16,6 @@
     "@types/node": "^25.0.2",
     "@typescript-eslint/eslint-plugin": "^8.49.0",
     "@vitest/coverage-v8": "^4.0.15",
-    "cors": "^2.8.5",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import-helpers": "^2.0.1",
