@@ -1,5 +1,5 @@
-import { env } from '../services/env'
-import app from './app'
+import app from '@/infra/core/app'
+import { env } from '@/infra/services/env'
 
 async function bootstrap() {
   await app.listen({
