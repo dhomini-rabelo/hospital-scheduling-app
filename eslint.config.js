@@ -21,6 +21,7 @@ const compat = new FlatCompat({
 export default [
   ...compat.extends("@rocketseat/eslint-config/node"),
   {
+    files: ['./backend/**/*.{ts}'],
     plugins: {
       "@typescript-eslint": typescriptEslint,
       "import-helpers": importHelpers,
