@@ -62,7 +62,7 @@ The system supports the following hospital roles:
 * **Linting**: ESLint (already configured in the project)
 * **Forbidden Libraries/Patterns**:
   * `eval()` or `exec()` anywhere in the codebase
-  * No heavy ORMs — use raw SQL or a lightweight query builder (e.g., better-sqlite3, drizzle)
+  * No heavy ORMs — except Prisma, which is the chosen ORM for this project
   * No server-side rendering — the frontend is a single-page application (SPA)
 
 ---
