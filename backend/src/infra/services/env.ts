@@ -11,6 +11,7 @@ if (process.env.NODE_ENV === 'test') {
 
 const envSchema = z.object({
   API_PORT: z.coerce.number(),
+  DATABASE_URL: z.string(),
 })
 
 const schema = envSchema.safeParse({
