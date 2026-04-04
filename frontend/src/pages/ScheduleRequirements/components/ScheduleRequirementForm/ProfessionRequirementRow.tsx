@@ -159,9 +159,19 @@ export function ProfessionRequirementRow({
             </div>
           )}
 
-          {fieldErrors?.specialtyRequirements?.message && (
+          {(
+            fieldErrors?.specialtyRequirements as
+              | { root?: { message?: string } }
+              | undefined
+          )?.root?.message && (
             <p className="mt-2 text-xs font-medium text-error-600">
-              {fieldErrors.specialtyRequirements.message}
+              {
+                (
+                  fieldErrors?.specialtyRequirements as {
+                    root?: { message?: string }
+                  }
+                )?.root?.message
+              }
             </p>
           )}
         </div>
