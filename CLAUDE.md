@@ -16,3 +16,9 @@
 ```bash
 cd /path/to/project && npm run lint:fix
 ```
+
+- Run the typescript compiler in the right project. The command is always `tsc --noEmit`.
+
+```bash
+cd /path/to/project && npx tsc --noEmit
+```
