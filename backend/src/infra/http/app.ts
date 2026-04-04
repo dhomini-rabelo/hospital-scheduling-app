@@ -1,11 +1,10 @@
-import cors from 'cors'
-import Express, { json, urlencoded } from 'express'
-
 import { errorHandler } from '@/infra/http/error-handler'
 import { createTeamMember } from '@/infra/http/routes/create-team-member'
 import { deleteTeamMember } from '@/infra/http/routes/delete-team-member'
 import { listTeamMembers } from '@/infra/http/routes/list-team-members'
 import { updateTeamMember } from '@/infra/http/routes/update-team-member'
+import cors from 'cors'
+import Express, { json, urlencoded } from 'express'
 
 const app = Express()
 

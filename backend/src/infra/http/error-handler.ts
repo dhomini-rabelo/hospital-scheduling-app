@@ -1,12 +1,11 @@
-import { NextFunction, Request, Response } from 'express'
-import { ZodError, ZodFormattedError } from 'zod'
-
 import {
   DangerErrors,
   DomainError,
   ValidationError,
 } from '@/modules/domain/errors'
+import { NextFunction, Request, Response } from 'express'
 import { isNumber } from 'lodash-es'
+import { ZodError, ZodFormattedError } from 'zod'
 
 const domainErrorStatusCodeMap: Record<DangerErrors, number> = {
   [DangerErrors.NOT_FOUND]: 404,

@@ -20,7 +20,7 @@ const compat = new FlatCompat({
 export default [
   ...compat.extends('@rocketseat/eslint-config/node'),
   {
-    files: ['./**/*.{ts}'],
+    files: ['**/*.ts'],
     plugins: {
       '@typescript-eslint': typescriptEslint,
       'import-helpers': importHelpers,
@@ -54,6 +54,13 @@ export default [
       '@typescript-eslint/no-duplicate-enum-values': 'off',
       'linebreak-style': ['error', 'unix'],
       '@typescript-eslint/triple-slash-reference': 'off',
+      'prettier/prettier': [
+        'error',
+        {
+          semi: false,
+          singleQuote: true,
+        },
+      ],
     },
   },
 ]
