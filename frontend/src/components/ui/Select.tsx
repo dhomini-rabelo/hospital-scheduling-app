@@ -38,7 +38,7 @@ export function Select({
       )}
       <select
         id={selectId}
-        className={`rounded-lg border bg-surface px-3 py-2 text-sm text-text-primary outline-none transition-[border-color,box-shadow] duration-[var(--transition-fast)] focus:border-primary-500 focus:ring-1 focus:ring-primary-500 ${
+        className={`rounded-lg border bg-surface px-3 py-2 text-sm text-text-primary outline-none transition-[border-color,box-shadow] duration-(--transition-fast) focus:border-primary-500 focus:ring-1 focus:ring-primary-500 ${
           error ? 'border-error-500' : 'border-border'
         } ${className}`}
         {...registration}

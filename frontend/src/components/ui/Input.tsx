@@ -29,7 +29,7 @@ export function Input({
       )}
       <input
         id={inputId}
-        className={`rounded-lg border px-3 py-2 text-sm text-text-primary outline-none transition-[border-color,box-shadow] duration-[var(--transition-fast)] placeholder:text-text-tertiary focus:border-primary-500 focus:ring-1 focus:ring-primary-500 ${
+        className={`rounded-lg border px-3 py-2 text-sm text-text-primary outline-none transition-[border-color,box-shadow] duration-(--transition-fast) placeholder:text-text-tertiary focus:border-primary-500 focus:ring-1 focus:ring-primary-500 ${
           error ? 'border-error-500' : 'border-border'
         } ${className}`}
         {...registration}

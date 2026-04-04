@@ -1,6 +1,6 @@
+import { ROUTES } from '@/layout/router/routes'
 import { Calendar, ClipboardList, Users } from 'lucide-react'
 import { NavLink } from 'react-router'
-import { ROUTES } from '@/layout/router/routes'
 
 const NAV_ITEMS = [
   { label: 'Schedule', route: ROUTES.schedule.route, icon: Calendar },
@@ -14,7 +14,7 @@ const NAV_ITEMS = [
 
 export function Sidebar() {
   return (
-    <aside className="flex h-screen w-60 flex-shrink-0 flex-col bg-neutral-900">
+    <aside className="flex h-screen w-60 shrink-0 flex-col bg-neutral-900">
       <div className="flex items-center gap-2 px-5 py-6">
         <Calendar size={24} className="text-primary-400" />
         <span className="text-lg font-semibold text-text-inverse">
@@ -29,7 +29,7 @@ export function Sidebar() {
             to={item.route}
             end={item.route === '/'}
             className={({ isActive }) =>
-              `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-[background-color,color] duration-[var(--transition-fast)] ${
+              `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-[background-color,color] duration-(--transition-fast) ${
                 isActive
                   ? 'bg-primary-600 text-text-inverse'
                   : 'text-neutral-400 hover:bg-neutral-800 hover:text-text-inverse'
