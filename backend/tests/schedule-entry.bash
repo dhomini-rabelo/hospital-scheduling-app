@@ -64,7 +64,7 @@ echo "Doctor IDs: $DOCTOR_1_ID, $DOCTOR_2_ID, $DOCTOR_3_ID"
 echo "Nurse IDs: $NURSE_1_ID, $NURSE_2_ID"
 
 # ==========================================
-# SETUP — create a schedule requirement for overview testing
+# SETUP — create schedule requirements for testing
 # ==========================================
 log_test "SETUP — create schedule requirement (weekday)"
 
@@ -96,9 +96,9 @@ REQ_ID=$(echo "$BODY" | grep -o '"id":"[^"]*"' | head -1 | cut -d'"' -f4)
 echo "Requirement ID: $REQ_ID"
 
 # ==========================================
-# SET — create schedule entries for today and tomorrow
+# SET — create schedule entries with schedule requirements
 # ==========================================
-log_test "PUT /schedule-entries — set entries for today + tomorrow"
+log_test "PUT /schedule-entries — set entries for today + tomorrow with scheduleRequirementIds"
 
 RESPONSE=$(curl -s -w "\n%{http_code}" -X PUT "$BASE_URL/schedule-entries" \
   -H "Content-Type: application/json" \
@@ -118,7 +118,8 @@ RESPONSE=$(curl -s -w "\n%{http_code}" -X PUT "$BASE_URL/schedule-entries" \
         \"specialtyRequirements\": []
       }
     ],
-    \"teamMemberIds\": [\"$DOCTOR_1_ID\", \"$DOCTOR_2_ID\", \"$NURSE_1_ID\", \"$NURSE_2_ID\"]
+    \"teamMemberIds\": [\"$DOCTOR_1_ID\", \"$DOCTOR_2_ID\", \"$NURSE_1_ID\", \"$NURSE_2_ID\"],
+    \"scheduleRequirementIds\": [\"$REQ_ID\"]
   }")
 
 BODY=$(echo "$RESPONSE" | sed '$d')
@@ -164,6 +165,26 @@ RESPONSE=$(curl -s -w "\n%{http_code}" -X PUT "$BASE_URL/schedule-entries" \
       { \"profession\": \"DOCTOR\", \"requiredCount\": 1, \"specialtyRequirements\": [] }
     ],
     \"teamMemberIds\": [\"00000000-0000-0000-0000-000000000000\"]
+  }")
+
+BODY=$(echo "$RESPONSE" | sed '$d')
+STATUS=$(echo "$RESPONSE" | tail -1)
+log_result "$STATUS" 400 "$BODY"
+
+# ==========================================
+# SET — non-existent schedule requirement should fail
+# ==========================================
+log_test "PUT /schedule-entries — non-existent schedule requirement should fail 400"
+
+RESPONSE=$(curl -s -w "\n%{http_code}" -X PUT "$BASE_URL/schedule-entries" \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"dates\": [\"$DAY_AFTER\"],
+    \"structure\": [
+      { \"profession\": \"DOCTOR\", \"requiredCount\": 1, \"specialtyRequirements\": [] }
+    ],
+    \"teamMemberIds\": [],
+    \"scheduleRequirementIds\": [\"00000000-0000-0000-0000-000000000000\"]
   }")
 
 BODY=$(echo "$RESPONSE" | sed '$d')
@@ -248,7 +269,8 @@ RESPONSE=$(curl -s -w "\n%{http_code}" -X PUT "$BASE_URL/schedule-entries" \
         \"specialtyRequirements\": []
       }
     ],
-    \"teamMemberIds\": [\"$DOCTOR_1_ID\", \"$DOCTOR_2_ID\", \"$DOCTOR_3_ID\", \"$NURSE_1_ID\", \"$NURSE_2_ID\"]
+    \"teamMemberIds\": [\"$DOCTOR_1_ID\", \"$DOCTOR_2_ID\", \"$DOCTOR_3_ID\", \"$NURSE_1_ID\", \"$NURSE_2_ID\"],
+    \"scheduleRequirementIds\": [\"$REQ_ID\"]
   }")
 
 BODY=$(echo "$RESPONSE" | sed '$d')
@@ -274,6 +296,14 @@ if [ -n "$HAS_TEAM_MEMBERS" ]; then
   echo "✅ Response includes teamMembers aggregate data"
 else
   echo "❌ Response missing teamMembers aggregate data"
+  FAILED=$((FAILED + 1))
+fi
+
+HAS_SCHEDULE_REQUIREMENTS=$(echo "$BODY" | grep -o '"scheduleRequirements"' | head -1)
+if [ -n "$HAS_SCHEDULE_REQUIREMENTS" ]; then
+  echo "✅ Response includes scheduleRequirements aggregate data"
+else
+  echo "❌ Response missing scheduleRequirements aggregate data"
   FAILED=$((FAILED + 1))
 fi
 
@@ -303,9 +333,10 @@ HAS_STRUCTURE=$(echo "$BODY" | grep -o '"structureFulfillment"')
 HAS_REQUIREMENTS=$(echo "$BODY" | grep -o '"requirementsFulfillment"')
 HAS_ENTRIES=$(echo "$BODY" | grep -o '"entries"')
 HAS_TOTAL=$(echo "$BODY" | grep -o '"totalAssigned"')
+HAS_OVERVIEW_SCHEDULE_REQS=$(echo "$BODY" | grep -o '"scheduleRequirements"')
 
-if [ -n "$HAS_STRUCTURE" ] && [ -n "$HAS_REQUIREMENTS" ] && [ -n "$HAS_ENTRIES" ] && [ -n "$HAS_TOTAL" ]; then
-  echo "✅ Overview has all expected fields"
+if [ -n "$HAS_STRUCTURE" ] && [ -n "$HAS_REQUIREMENTS" ] && [ -n "$HAS_ENTRIES" ] && [ -n "$HAS_TOTAL" ] && [ -n "$HAS_OVERVIEW_SCHEDULE_REQS" ]; then
+  echo "✅ Overview has all expected fields (including scheduleRequirements)"
 else
   echo "❌ Overview missing fields"
   FAILED=$((FAILED + 1))

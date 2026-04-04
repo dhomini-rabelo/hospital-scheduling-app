@@ -2,23 +2,28 @@ import {
   ScheduleEntry,
   StructureDataJsonField,
 } from '@/domain/entities/schedule-entry/schedule-entry'
+import { ScheduleEntryScheduleRequirementMapWatchedList } from '@/domain/entities/schedule-entry/watched-lists/schedule-entry-schedule-requirement-map'
 import { ScheduleEntryTeamMemberMapWatchedList } from '@/domain/entities/schedule-entry/watched-lists/schedule-entry-team-member-map'
+import { ScheduleRequirement } from '@/domain/entities/schedule-requirement'
 import { TeamMember } from '@/domain/entities/team-member'
 
 export type ScheduleEntryWithAggregateData = {
   scheduleEntry: ScheduleEntry
   teamMembers: TeamMember[]
+  scheduleRequirements: ScheduleRequirement[]
 }
 
 export type CreateScheduleEntryInput = {
   date: string
   structure: StructureDataJsonField
   teamMembers: ScheduleEntryTeamMemberMapWatchedList
+  scheduleRequirements: ScheduleEntryScheduleRequirementMapWatchedList
 }
 
 export type UpdateScheduleEntryInput = {
   structure: StructureDataJsonField
   teamMembers: ScheduleEntryTeamMemberMapWatchedList
+  scheduleRequirements: ScheduleEntryScheduleRequirementMapWatchedList
 }
 
 export abstract class ScheduleEntryRepository {

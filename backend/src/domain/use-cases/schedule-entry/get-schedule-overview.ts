@@ -52,6 +52,7 @@ export type ScheduleOverviewResult = {
     id: string
     teamMember: TeamMember
   }[]
+  scheduleRequirements: ScheduleRequirement[]
   structureFulfillment: StructureFulfillmentResult | null
   requirementsFulfillment: RequirementFulfillmentResult[]
 }
@@ -139,6 +140,7 @@ export class GetScheduleOverviewUseCase implements UseCase<Response> {
         date: payload.date,
         totalAssigned: teamMembers.length,
         entries,
+        scheduleRequirements: aggregateData?.scheduleRequirements ?? [],
         structureFulfillment,
         requirementsFulfillment,
       },

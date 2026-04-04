@@ -1,11 +1,14 @@
 import { ScheduleEntryRepository } from '@/adapters/repositories/schedule-entry-repository'
+import { ScheduleRequirementRepository } from '@/adapters/repositories/schedule-requirement-repository'
 import { TeamMemberRepository } from '@/adapters/repositories/team-member-repository'
 import {
   ScheduleEntry,
   StructureData,
   StructureDataJsonField,
 } from '@/domain/entities/schedule-entry/schedule-entry'
+import { ScheduleEntryScheduleRequirementMap } from '@/domain/entities/schedule-entry/schedule-entry-schedule-requirement-map'
 import { ScheduleEntryTeamMemberMap } from '@/domain/entities/schedule-entry/schedule-entry-team-member-map'
+import { ScheduleEntryScheduleRequirementMapWatchedList } from '@/domain/entities/schedule-entry/watched-lists/schedule-entry-schedule-requirement-map'
 import { ScheduleEntryTeamMemberMapWatchedList } from '@/domain/entities/schedule-entry/watched-lists/schedule-entry-team-member-map'
 import {
   validateStructureData,
@@ -19,6 +22,7 @@ interface Payload {
   dates: string[]
   structure: StructureData
   teamMemberIds: string[]
+  scheduleRequirementIds: string[]
 }
 
 interface Response {
@@ -29,6 +33,7 @@ export class SetScheduleEntriesUseCase implements UseCase<Response> {
   constructor(
     private scheduleEntryRepository: ScheduleEntryRepository,
     private teamMemberRepository: TeamMemberRepository,
+    private scheduleRequirementRepository: ScheduleRequirementRepository,
   ) {}
 
   async execute(payload: Payload): Promise<Response> {
@@ -50,40 +55,79 @@ export class SetScheduleEntriesUseCase implements UseCase<Response> {
 
     validateTeamMembersAgainstStructure(resolvedTeamMembers, payload.structure)
 
+    const allScheduleRequirements =
+      await this.scheduleRequirementRepository.findAll()
+    for (const id of payload.scheduleRequirementIds) {
+      const requirement = allScheduleRequirements.find((sr) => sr.id === id)
+      if (!requirement) {
+        throw new ValidationError({
+          errorField: 'scheduleRequirementIds',
+          code: 'SCHEDULE_REQUIREMENT_NOT_FOUND',
+          variables: [id],
+        })
+      }
+    }
+
     const items: ScheduleEntry[] = []
 
     for (const date of payload.dates) {
       const existingEntry = await this.scheduleEntryRepository.findByDate(date)
 
       if (existingEntry) {
-        const mapEntities = payload.teamMemberIds.map((teamMemberId) =>
-          ScheduleEntryTeamMemberMap.create({
-            scheduleEntryId: existingEntry.id,
-            teamMemberId,
-          }),
+        const teamMemberMapEntities = payload.teamMemberIds.map(
+          (teamMemberId) =>
+            ScheduleEntryTeamMemberMap.create({
+              scheduleEntryId: existingEntry.id,
+              teamMemberId,
+            }),
         )
-        existingEntry.props.teamMembers.update(mapEntities)
+        existingEntry.props.teamMembers.update(teamMemberMapEntities)
+
+        const requirementMapEntities = payload.scheduleRequirementIds.map(
+          (scheduleRequirementId) =>
+            ScheduleEntryScheduleRequirementMap.create({
+              scheduleEntryId: existingEntry.id,
+              scheduleRequirementId,
+            }),
+        )
+        existingEntry.props.scheduleRequirements.update(requirementMapEntities)
 
         const updatedEntry = await this.scheduleEntryRepository.update(
           existingEntry.id,
           {
             structure: StructureDataJsonField.create(payload.structure),
             teamMembers: existingEntry.props.teamMembers,
+            scheduleRequirements: existingEntry.props.scheduleRequirements,
           },
         )
         items.push(updatedEntry)
       } else {
-        const mapEntities = payload.teamMemberIds.map((teamMemberId) =>
-          ScheduleEntryTeamMemberMap.create({
-            scheduleEntryId: '',
-            teamMemberId,
-          }),
+        const teamMemberMapEntities = payload.teamMemberIds.map(
+          (teamMemberId) =>
+            ScheduleEntryTeamMemberMap.create({
+              scheduleEntryId: '',
+              teamMemberId,
+            }),
+        )
+
+        const requirementMapEntities = payload.scheduleRequirementIds.map(
+          (scheduleRequirementId) =>
+            ScheduleEntryScheduleRequirementMap.create({
+              scheduleEntryId: '',
+              scheduleRequirementId,
+            }),
         )
 
         const createdEntry = await this.scheduleEntryRepository.create({
           date,
           structure: StructureDataJsonField.create(payload.structure),
-          teamMembers: new ScheduleEntryTeamMemberMapWatchedList(mapEntities),
+          teamMembers: new ScheduleEntryTeamMemberMapWatchedList(
+            teamMemberMapEntities,
+          ),
+          scheduleRequirements:
+            new ScheduleEntryScheduleRequirementMapWatchedList(
+              requirementMapEntities,
+            ),
         })
         items.push(createdEntry)
       }

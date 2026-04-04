@@ -1,3 +1,4 @@
+import { ScheduleEntryScheduleRequirementMapWatchedList } from './watched-lists/schedule-entry-schedule-requirement-map'
 import { ScheduleEntryTeamMemberMapWatchedList } from './watched-lists/schedule-entry-team-member-map'
 
 import { ProfessionRequirement } from '@/domain/entities/schedule-requirement'
@@ -16,13 +17,17 @@ export type ScheduleEntryProps = {
   date: string
   structure: StructureDataJsonField
   teamMembers: ScheduleEntryTeamMemberMapWatchedList
+  scheduleRequirements: ScheduleEntryScheduleRequirementMapWatchedList
   createdAt: Date
   updatedAt: Date
 }
 
 export class ScheduleEntry extends Entity<ScheduleEntryProps> {
   static create(
-    props: Pick<ScheduleEntryProps, 'date' | 'structure' | 'teamMembers'>,
+    props: Pick<
+      ScheduleEntryProps,
+      'date' | 'structure' | 'teamMembers' | 'scheduleRequirements'
+    >,
   ) {
     const now = new Date()
     return new ScheduleEntry({

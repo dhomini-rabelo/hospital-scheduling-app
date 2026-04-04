@@ -1,6 +1,7 @@
 import { ScheduleEntryWithAggregateData } from '@/adapters/repositories/schedule-entry-repository'
 import { ScheduleEntry } from '@/domain/entities/schedule-entry/schedule-entry'
 import { ScheduleOverviewResult } from '@/domain/use-cases/schedule-entry/get-schedule-overview'
+import { presentScheduleRequirement } from '@/infra/http/presenters/schedule-requirement-presenter'
 import { presentTeamMember } from '@/infra/http/presenters/team-member-presenter'
 
 export function presentScheduleEntry(scheduleEntry: ScheduleEntry) {
@@ -19,6 +20,9 @@ export function presentScheduleEntryWithAggregateData(
   return {
     ...presentScheduleEntry(data.scheduleEntry),
     teamMembers: data.teamMembers.map(presentTeamMember),
+    scheduleRequirements: data.scheduleRequirements.map(
+      presentScheduleRequirement,
+    ),
   }
 }
 
@@ -30,6 +34,9 @@ export function presentScheduleOverview(overview: ScheduleOverviewResult) {
       id: entry.id,
       teamMember: presentTeamMember(entry.teamMember),
     })),
+    scheduleRequirements: overview.scheduleRequirements.map(
+      presentScheduleRequirement,
+    ),
     structureFulfillment: overview.structureFulfillment,
     requirementsFulfillment: overview.requirementsFulfillment,
   }

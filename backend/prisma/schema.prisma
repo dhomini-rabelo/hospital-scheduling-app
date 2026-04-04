@@ -27,7 +27,8 @@ model ScheduleEntry {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  teamMembers ScheduleEntryTeamMemberMap[]
+  teamMembers          ScheduleEntryTeamMemberMap[]
+  scheduleRequirements ScheduleEntryScheduleRequirementMap[]
 
   @@map("schedule_entries")
 }
@@ -45,6 +46,19 @@ model ScheduleEntryTeamMemberMap {
   @@map("schedule_entry_team_members")
 }
 
+model ScheduleEntryScheduleRequirementMap {
+  id                    String              @id @default(uuid())
+  scheduleEntryId       String              @map("schedule_entry_id")
+  scheduleRequirementId String              @map("schedule_requirement_id")
+  scheduleEntry         ScheduleEntry       @relation(fields: [scheduleEntryId], references: [id], onDelete: Cascade)
+  scheduleRequirement   ScheduleRequirement @relation(fields: [scheduleRequirementId], references: [id])
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
+
+  @@unique([scheduleEntryId, scheduleRequirementId])
+  @@map("schedule_entry_schedule_requirements")
+}
+
 model ScheduleRequirement {
   id            String   @id @default(uuid())
   dateReference String   @unique @map("date_reference")
@@ -52,6 +66,8 @@ model ScheduleRequirement {
   isEnabled     Boolean  @default(true) @map("is_enabled")
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
+
+  scheduleEntryScheduleRequirementMaps ScheduleEntryScheduleRequirementMap[]
 
   @@map("schedule_requirements")
 }
