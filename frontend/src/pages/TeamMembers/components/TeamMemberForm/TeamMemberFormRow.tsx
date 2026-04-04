@@ -9,7 +9,7 @@ import {
   Profession,
   formatSpecialtyLabel,
 } from '@/server/types/entities'
-import type { TeamMemberFormSchema } from './TeamMemberForm'
+import type { TeamMemberFormSchema } from './CreateTeamMemberDialog'
 
 const PROFESSION_OPTIONS = Object.values(Profession).map((value) => ({
   value,
