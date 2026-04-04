@@ -1,4 +1,4 @@
-import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
+import { ConfirmDialog } from '@/layout/components/ui/ConfirmDialog'
 import { deleteTeamMember } from '@/server/api/team-members'
 import type { TeamMember } from '@/server/types/entities'
 import { useState } from 'react'

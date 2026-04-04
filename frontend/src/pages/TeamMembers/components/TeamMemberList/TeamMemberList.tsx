@@ -1,11 +1,11 @@
-import { Select } from '@/components/ui/Select'
+import { Select } from '@/layout/components/ui/Select'
 import { useAPIRequest } from '@/layout/hooks/useAPIRequest'
 import { useDialogs } from '@/layout/hooks/useDialogs'
 import { API_ROUTES } from '@/server/routes'
 import type { TeamMember } from '@/server/types/entities'
 import {
-  PROFESSION_LABELS,
-  Profession,
+    PROFESSION_LABELS,
+    Profession,
 } from '@/server/types/entities'
 import { Loader2, Users } from 'lucide-react'
 import { useState } from 'react'

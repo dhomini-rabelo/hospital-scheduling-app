@@ -1,11 +1,10 @@
-import { Badge } from '@/components/ui/Badge'
-import type { ScheduleRequirement } from '@/server/types/entities'
+import { Badge } from '@/layout/components/ui/Badge'
+import type { ScheduleRequirement, Specialty } from '@/server/types/entities'
 import {
-  PROFESSION_LABELS,
-  Profession,
-  formatSpecialtyLabel,
+    PROFESSION_LABELS,
+    Profession,
+    formatSpecialtyLabel,
 } from '@/server/types/entities'
-import type { Specialty } from '@/server/types/entities'
 import { Pencil, ToggleLeft, ToggleRight, Trash2 } from 'lucide-react'
 
 interface ScheduleRequirementRowProps {

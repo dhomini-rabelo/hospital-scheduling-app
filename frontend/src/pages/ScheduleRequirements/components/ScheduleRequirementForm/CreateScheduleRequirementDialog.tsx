@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
+import { Button } from '@/layout/components/ui/Button'
+import { Input } from '@/layout/components/ui/Input'
 import {
   createScheduleRequirement,
   type CreateScheduleRequirementInput,

@@ -1,13 +1,13 @@
-import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
-import { Select } from '@/components/ui/Select'
+import { Button } from '@/layout/components/ui/Button'
+import { Input } from '@/layout/components/ui/Input'
+import { Select } from '@/layout/components/ui/Select'
 import { updateTeamMember } from '@/server/api/team-members'
 import type { TeamMember } from '@/server/types/entities'
 import {
-  PROFESSION_LABELS,
-  PROFESSION_SPECIALTIES,
-  Profession,
-  formatSpecialtyLabel,
+    PROFESSION_LABELS,
+    PROFESSION_SPECIALTIES,
+    Profession,
+    formatSpecialtyLabel,
 } from '@/server/types/entities'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Pencil } from 'lucide-react'

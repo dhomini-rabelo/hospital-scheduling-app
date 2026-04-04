@@ -1,4 +1,4 @@
-import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
+import { ConfirmDialog } from '@/layout/components/ui/ConfirmDialog'
 import { deleteScheduleRequirement } from '@/server/api/schedule-requirements'
 import type { ScheduleRequirement } from '@/server/types/entities'
 import { useState } from 'react'

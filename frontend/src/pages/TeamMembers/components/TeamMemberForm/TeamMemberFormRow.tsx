@@ -1,14 +1,14 @@
+import { Input } from '@/layout/components/ui/Input'
+import { Select } from '@/layout/components/ui/Select'
+import {
+    PROFESSION_LABELS,
+    PROFESSION_SPECIALTIES,
+    Profession,
+    formatSpecialtyLabel,
+} from '@/server/types/entities'
 import { X } from 'lucide-react'
 import { useEffect } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
-import { Input } from '@/components/ui/Input'
-import { Select } from '@/components/ui/Select'
-import {
-  PROFESSION_LABELS,
-  PROFESSION_SPECIALTIES,
-  Profession,
-  formatSpecialtyLabel,
-} from '@/server/types/entities'
 import type { TeamMemberFormSchema } from './CreateTeamMemberDialog'
 
 const PROFESSION_OPTIONS = Object.values(Profession).map((value) => ({

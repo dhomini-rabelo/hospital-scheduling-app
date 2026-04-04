@@ -1,5 +1,5 @@
-import { Input } from '@/components/ui/Input'
-import { Select } from '@/components/ui/Select'
+import { Input } from '@/layout/components/ui/Input'
+import { Select } from '@/layout/components/ui/Select'
 import { X } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
 import type { CreateScheduleRequirementSchema } from './CreateScheduleRequirementDialog'

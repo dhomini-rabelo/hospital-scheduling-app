@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/layout/components/ui/Button'
 import { useDialogs } from '@/layout/hooks/useDialogs'
 import { API_ROUTES } from '@/server/routes'
 import { useQueryClient } from '@tanstack/react-query'

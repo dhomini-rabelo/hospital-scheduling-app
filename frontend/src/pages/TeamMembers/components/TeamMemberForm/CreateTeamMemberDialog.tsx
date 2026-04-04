@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/layout/components/ui/Button'
 import { createTeamMembers } from '@/server/api/team-members'
 import { Profession } from '@/server/types/entities'
 import { zodResolver } from '@hookform/resolvers/zod'

@@ -1,11 +1,11 @@
-import { Button } from '@/components/ui/Button'
-import { Input } from '@/components/ui/Input'
-import { Select } from '@/components/ui/Select'
+import { Button } from '@/layout/components/ui/Button'
+import { Input } from '@/layout/components/ui/Input'
+import { Select } from '@/layout/components/ui/Select'
 import {
-  PROFESSION_LABELS,
-  PROFESSION_SPECIALTIES,
-  Profession,
-  formatSpecialtyLabel,
+    PROFESSION_LABELS,
+    PROFESSION_SPECIALTIES,
+    Profession,
+    formatSpecialtyLabel,
 } from '@/server/types/entities'
 import { Plus, X } from 'lucide-react'
 import { useEffect } from 'react'

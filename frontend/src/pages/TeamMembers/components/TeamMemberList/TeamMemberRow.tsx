@@ -1,8 +1,8 @@
-import { Badge } from '@/components/ui/Badge'
+import { Badge } from '@/layout/components/ui/Badge'
 import type { TeamMember } from '@/server/types/entities'
 import {
-  PROFESSION_LABELS,
-  formatSpecialtyLabel,
+    PROFESSION_LABELS,
+    formatSpecialtyLabel,
 } from '@/server/types/entities'
 import { Pencil, Trash2 } from 'lucide-react'
 
