@@ -8,7 +8,7 @@ import {
   formatSpecialtyLabel,
 } from '@/server/types/entities'
 import { Plus, X } from 'lucide-react'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form'
 import type { SetScheduleSchema } from './SetScheduleDialog'
 import { StructureSpecialtyRow } from './StructureSpecialtyRow'
@@ -85,10 +85,13 @@ export function StructureProfessionRow({
       }))
   }
 
+  const previousProfessionRef = useRef(profession)
+
   useEffect(() => {
-    if (profession) {
+    if (profession && profession !== previousProfessionRef.current) {
       setValue(`structure.${index}.specialtyRequirements`, [])
     }
+    previousProfessionRef.current = profession
   }, [profession, index, setValue])
 
   const fieldErrors = formState.errors.structure?.[index]
