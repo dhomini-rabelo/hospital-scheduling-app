@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/Button'
 import { createTeamMembers } from '@/server/api/team-members'
 import { Profession } from '@/server/types/entities'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Plus } from 'lucide-react'
+import { Plus, Send } from 'lucide-react'
 import { useState } from 'react'
 import { FormProvider, useFieldArray, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -66,7 +66,12 @@ export function TeamMemberForm({ onSuccess }: TeamMemberFormProps) {
 
   return (
     <div className="card">
-      <h2 className="text-heading-4 mb-4">Add Team Members</h2>
+      <div className="mb-5 flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-100">
+          <Plus size={16} className="text-primary-600" />
+        </div>
+        <h2 className="text-heading-4">Add Team Members</h2>
+      </div>
 
       <FormProvider {...form}>
         <form
@@ -85,10 +90,14 @@ export function TeamMemberForm({ onSuccess }: TeamMemberFormProps) {
           </div>
 
           {state.formError && (
-            <p className="text-sm text-error-600">{state.formError}</p>
+            <div className="rounded-xl border border-error-100 bg-error-50 px-4 py-2.5">
+              <p className="text-sm font-medium text-error-700">
+                {state.formError}
+              </p>
+            </div>
           )}
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 border-t border-border/60 pt-4">
             <Button
               type="button"
               variant="ghost"
@@ -103,6 +112,7 @@ export function TeamMemberForm({ onSuccess }: TeamMemberFormProps) {
               size="sm"
               isLoading={form.formState.isSubmitting}
             >
+              <Send size={14} />
               Submit All
             </Button>
           </div>

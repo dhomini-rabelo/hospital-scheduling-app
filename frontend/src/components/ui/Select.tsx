@@ -27,19 +27,21 @@ export function Select({
   const selectId = id || registration?.name
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1.5">
       {label && (
         <label
           htmlFor={selectId}
-          className="text-sm font-medium text-text-secondary"
+          className="font-heading text-sm font-semibold text-text-secondary"
         >
           {label}
         </label>
       )}
       <select
         id={selectId}
-        className={`rounded-lg border bg-surface px-3 py-2 text-sm text-text-primary outline-none transition-[border-color,box-shadow] duration-(--transition-fast) focus:border-primary-500 focus:ring-1 focus:ring-primary-500 ${
-          error ? 'border-error-500' : 'border-border'
+        className={`rounded-xl border bg-surface px-4 py-2.5 text-sm text-text-primary outline-none transition-all duration-(--transition-base) focus:border-primary-400 focus:ring-2 focus:ring-primary-100 disabled:cursor-not-allowed disabled:bg-neutral-50 disabled:text-text-tertiary ${
+          error
+            ? 'border-error-400 ring-2 ring-error-100'
+            : 'border-border hover:border-border-strong'
         } ${className}`}
         {...registration}
         {...rest}
@@ -55,7 +57,9 @@ export function Select({
           </option>
         ))}
       </select>
-      {error && <span className="text-xs text-error-600">{error}</span>}
+      {error && (
+        <span className="text-xs font-medium text-error-600">{error}</span>
+      )}
     </div>
   )
 }

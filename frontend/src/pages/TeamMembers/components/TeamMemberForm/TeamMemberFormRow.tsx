@@ -50,7 +50,7 @@ export function TeamMemberFormRow({
   const fieldErrors = formState.errors.items?.[index]
 
   return (
-    <div className="flex items-start gap-3">
+    <div className="flex items-start gap-3 rounded-xl bg-surface-sunken/50 p-3 transition-colors duration-(--transition-base)">
       <div className="grid flex-1 grid-cols-3 gap-3">
         <Input
           placeholder="Name"
@@ -75,9 +75,9 @@ export function TeamMemberFormRow({
         type="button"
         onClick={onRemove}
         disabled={isRemoveDisabled}
-        className="mt-2 rounded-md p-1 text-text-tertiary transition-colors duration-[var(--transition-fast)] hover:bg-neutral-100 hover:text-error-600 disabled:cursor-not-allowed disabled:opacity-30"
+        className="mt-2.5 rounded-lg p-1.5 text-text-tertiary transition-all duration-(--transition-base) hover:bg-error-50 hover:text-error-600 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text-tertiary"
       >
-        <X size={18} />
+        <X size={16} />
       </button>
     </div>
   )

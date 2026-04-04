@@ -7,7 +7,7 @@ import {
   PROFESSION_LABELS,
   Profession,
 } from '@/server/types/entities'
-import { Users } from 'lucide-react'
+import { Loader2, Users } from 'lucide-react'
 import { useState } from 'react'
 import { EditTeamMemberDialog } from '../EditTeamMemberDialog'
 import { DeleteTeamMemberDialog } from './DeleteTeamMemberDialog'
@@ -79,7 +79,10 @@ export function TeamMemberList() {
 
   return (
     <>
-      <div className="flex justify-end">
+      <div className="flex items-center justify-between">
+        <h2 className="font-heading text-lg font-semibold text-text-primary">
+          Staff Directory
+        </h2>
         <div className="w-48">
           <Select
             options={PROFESSION_FILTER_OPTIONS}
@@ -90,23 +93,32 @@ export function TeamMemberList() {
       </div>
 
       {apiRequest.state.isLoading && (
-        <p className="text-body-sm text-text-secondary">Loading...</p>
+        <div className="card flex items-center justify-center py-16">
+          <Loader2
+            size={24}
+            className="animate-spin text-primary-500"
+          />
+        </div>
       )}
 
       {apiRequest.state.isError && (
-        <p className="text-body-sm text-error-600">
-          Failed to load team members.
-        </p>
+        <div className="card border border-error-100 bg-error-50 py-8 text-center">
+          <p className="text-sm font-medium text-error-700">
+            Failed to load team members. Please try again.
+          </p>
+        </div>
       )}
 
       {apiRequest.state.data && apiRequest.state.data.length === 0 && (
-        <div className="card flex flex-col items-center justify-center py-12 text-center">
-          <Users size={40} className="mb-3 text-text-tertiary" />
-          <p className="text-body text-text-secondary">
-            No team members found.
+        <div className="card flex flex-col items-center justify-center py-16 text-center">
+          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-neutral-100">
+            <Users size={28} className="text-text-tertiary" />
+          </div>
+          <p className="font-heading text-base font-semibold text-text-secondary">
+            No team members yet
           </p>
-          <p className="text-body-sm text-text-tertiary">
-            Add team members using the form above.
+          <p className="mt-1 text-sm text-text-tertiary">
+            Add your first team member using the form above.
           </p>
         </div>
       )}
@@ -116,27 +128,28 @@ export function TeamMemberList() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-border bg-surface-sunken">
-                <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                <th className="px-6 py-3.5 text-left font-heading text-xs font-semibold uppercase tracking-wider text-text-tertiary">
                   Name
                 </th>
-                <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                <th className="px-6 py-3.5 text-left font-heading text-xs font-semibold uppercase tracking-wider text-text-tertiary">
                   Profession
                 </th>
-                <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                <th className="px-6 py-3.5 text-left font-heading text-xs font-semibold uppercase tracking-wider text-text-tertiary">
                   Specialty
                 </th>
-                <th className="px-5 py-3 text-right text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                <th className="px-6 py-3.5 text-right font-heading text-xs font-semibold uppercase tracking-wider text-text-tertiary">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="px-5">
-              {apiRequest.state.data.map((teamMember) => (
+            <tbody>
+              {apiRequest.state.data.map((teamMember, index) => (
                 <TeamMemberRow
                   key={teamMember.id}
                   teamMember={teamMember}
                   onEdit={handleEdit}
                   onDelete={handleDelete}
+                  index={index}
                 />
               ))}
             </tbody>

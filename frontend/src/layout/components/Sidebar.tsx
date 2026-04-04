@@ -14,33 +14,46 @@ const NAV_ITEMS = [
 
 export function Sidebar() {
   return (
-    <aside className="flex h-screen w-60 shrink-0 flex-col bg-neutral-900">
-      <div className="flex items-center gap-2 px-5 py-6">
-        <Calendar size={24} className="text-primary-400" />
-        <span className="text-lg font-semibold text-text-inverse">
+    <aside className="flex h-screen w-64 shrink-0 flex-col bg-neutral-900">
+      <div className="flex items-center gap-3 px-6 py-7">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-500">
+          <Calendar size={18} className="text-white" />
+        </div>
+        <span className="font-heading text-[1.0625rem] font-bold tracking-tight text-text-inverse">
           Hospital Scheduler
         </span>
       </div>
 
-      <nav className="flex flex-1 flex-col gap-1 px-3">
+      <nav className="mt-2 flex flex-1 flex-col gap-1 px-3">
         {NAV_ITEMS.map((item) => (
           <NavLink
             key={item.route}
             to={item.route}
             end={item.route === '/'}
             className={({ isActive }) =>
-              `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-[background-color,color] duration-(--transition-fast) ${
+              `group flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-all duration-(--transition-base) ${
                 isActive
-                  ? 'bg-primary-600 text-text-inverse'
-                  : 'text-neutral-400 hover:bg-neutral-800 hover:text-text-inverse'
+                  ? 'bg-primary-500 text-white shadow-md shadow-primary-500/20'
+                  : 'text-neutral-400 hover:bg-neutral-800/80 hover:text-neutral-200'
               }`
             }
           >
-            <item.icon size={18} />
+            <item.icon
+              size={18}
+              strokeWidth={2}
+              className="shrink-0 transition-transform duration-(--transition-base) group-hover:scale-105"
+            />
             {item.label}
           </NavLink>
         ))}
       </nav>
+
+      <div className="px-4 pb-6">
+        <div className="rounded-xl border border-neutral-800 bg-neutral-800/50 px-4 py-3">
+          <p className="text-xs font-medium text-neutral-500">Version</p>
+          <p className="text-xs text-neutral-400">v1.0.0</p>
+        </div>
+      </div>
     </aside>
   )
 }

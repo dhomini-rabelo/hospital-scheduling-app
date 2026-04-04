@@ -10,6 +10,7 @@ import {
   formatSpecialtyLabel,
 } from '@/server/types/entities'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Pencil } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm, useWatch } from 'react-hook-form'
 import { z } from 'zod'
@@ -90,14 +91,19 @@ export function EditTeamMemberDialog({
   }
 
   return (
-    <div className="fixed inset-0 z-(--z-modal) flex items-center justify-center">
+    <div className="fixed inset-0 z-(--z-modal) flex items-center justify-center p-4">
       <div
-        className="absolute inset-0 bg-neutral-900/50"
+        className="modal-overlay absolute inset-0 bg-neutral-900/40 backdrop-blur-sm"
         onClick={onClose}
         role="presentation"
       />
-      <div className="card-raised relative z-10 w-full max-w-lg">
-        <h3 className="text-heading-4 mb-4">Edit Team Member</h3>
+      <div className="modal-content card-raised relative z-10 w-full max-w-lg">
+        <div className="mb-5 flex items-center gap-2.5">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-100">
+            <Pencil size={16} className="text-primary-600" />
+          </div>
+          <h3 className="text-heading-4">Edit Team Member</h3>
+        </div>
 
         <form
           onSubmit={handleSubmit(handleFormSubmit)}
@@ -125,10 +131,14 @@ export function EditTeamMemberDialog({
           />
 
           {state.formError && (
-            <p className="text-sm text-error-600">{state.formError}</p>
+            <div className="rounded-xl border border-error-100 bg-error-50 px-4 py-2.5">
+              <p className="text-sm font-medium text-error-700">
+                {state.formError}
+              </p>
+            </div>
           )}
 
-          <div className="flex justify-end gap-3">
+          <div className="flex justify-end gap-3 border-t border-border/60 pt-4">
             <Button
               type="button"
               variant="secondary"

@@ -1,3 +1,4 @@
+import { AlertTriangle } from 'lucide-react'
 import { Button } from './Button'
 
 interface ConfirmDialogProps {
@@ -16,15 +17,18 @@ export function ConfirmDialog({
   isLoading = false,
 }: ConfirmDialogProps) {
   return (
-    <div className="fixed inset-0 z-(--z-modal) flex items-center justify-center">
+    <div className="fixed inset-0 z-(--z-modal) flex items-center justify-center p-4">
       <div
-        className="absolute inset-0 bg-neutral-900/50"
+        className="modal-overlay absolute inset-0 bg-neutral-900/40 backdrop-blur-sm"
         onClick={onCancel}
         onKeyDown={undefined}
         role="presentation"
       />
-      <div className="card-raised relative z-10 w-full max-w-md">
-        <h3 className="text-heading-4 mb-2">{title}</h3>
+      <div className="modal-content card-raised relative z-10 w-full max-w-md">
+        <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-error-50 ring-1 ring-error-100">
+          <AlertTriangle size={20} className="text-error-600" />
+        </div>
+        <h3 className="text-heading-4 mb-1.5">{title}</h3>
         <p className="text-body-sm mb-6 text-text-secondary">{message}</p>
         <div className="flex justify-end gap-3">
           <Button variant="secondary" onClick={onCancel} disabled={isLoading}>
