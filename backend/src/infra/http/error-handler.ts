@@ -112,7 +112,9 @@ export function errorHandler(
   } else if (err instanceof ValidationError) {
     response.status = 400
     response.body = {
-      [err.response.errorField]: [err.response.code],
+      [err.response.errorField]: [
+        `${err.response.code}#${err.response.variables?.join(',')}`,
+      ],
     }
   } else if (err instanceof DomainError) {
     response.status = domainErrorStatusCodeMap[err.response.errorType!] || 409

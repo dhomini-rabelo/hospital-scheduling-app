@@ -3,6 +3,7 @@ import type { SetScheduleEntriesInput } from '@/server/api/schedule-entries'
 import { setScheduleEntries } from '@/server/api/schedule-entries'
 import { Profession } from '@/server/types/entities'
 import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
 import { ArrowLeft, ArrowRight, CalendarCog, Plus, Send } from 'lucide-react'
 import { useState } from 'react'
 import { FormProvider, useFieldArray, useForm, useWatch } from 'react-hook-form'
@@ -62,6 +63,49 @@ type DialogStage = 'structure' | 'team-members'
 interface SetScheduleDialogProps {
   onClose: () => void
   onSuccess: () => void
+}
+
+const VALIDATION_ERROR_MESSAGES: Record<string, (...variables: string[]) => string> = {
+  TEAM_MEMBER_NOT_FOUND: (id) =>
+    `Team member not found (${id}).`,
+  SCHEDULE_REQUIREMENT_NOT_FOUND: (id) =>
+    `Schedule requirement not found (${id}).`,
+  TEAM_MEMBER_PROFESSION_NOT_IN_STRUCTURE: (name, profession) =>
+    `${name} is a ${profession} but the structure has no ${profession} requirement.`,
+  PROFESSION_COUNT_EXCEEDS_STRUCTURE: (profession, assigned, required) =>
+    `Too many ${profession}s selected: ${assigned} assigned but structure allows ${required}.`,
+  SPECIALTY_COUNT_EXCEEDS_STRUCTURE: (specialty, assigned, required) =>
+    `Too many ${specialty} specialists: ${assigned} assigned but structure allows ${required}.`,
+  DATES_OUTSIDE_ALLOWED_RANGE: (...dates) =>
+    `These dates are outside the allowed range: ${dates.join(', ')}.`,
+  STRUCTURE_MUST_NOT_BE_EMPTY: () =>
+    'The staffing structure must have at least one profession.',
+  INVALID_PROFESSION: (profession) =>
+    `Invalid profession: ${profession}.`,
+  DUPLICATE_PROFESSION: (profession) =>
+    `Duplicate profession in structure: ${profession}.`,
+  INVALID_SPECIALTY_FOR_PROFESSION: (profession, specialty) =>
+    `${specialty} is not a valid specialty for ${profession}.`,
+  DUPLICATE_SPECIALTY: (specialty) =>
+    `Duplicate specialty: ${specialty}.`,
+  SPECIALTY_SUM_EXCEEDS_REQUIRED_COUNT: (profession, sum, required) =>
+    `Specialty counts for ${profession} sum to ${sum} but only ${required} required.`,
+}
+
+function parseValidationError(responseData: Record<string, string[]>): string {
+  for (const messages of Object.values(responseData)) {
+    if (!Array.isArray(messages)) continue
+    for (const raw of messages) {
+      const [code, variablesStr] = raw.split('#')
+      const variables = variablesStr ? variablesStr.split(',') : []
+      const formatter = VALIDATION_ERROR_MESSAGES[code]
+      if (formatter) {
+        return formatter(...variables)
+      }
+      return raw
+    }
+  }
+  return 'Failed to set schedule. Please try again.'
 }
 
 const EMPTY_PROFESSION_ROW = {
@@ -138,10 +182,14 @@ export function SetScheduleDialog({
       })
       onSuccess()
       onClose()
-    } catch {
+    } catch (error) {
+      const errorMessage =
+        axios.isAxiosError(error) && error.response?.status === 400
+          ? parseValidationError(error.response.data)
+          : 'Failed to set schedule. Please try again.'
       setState((previousState) => ({
         ...previousState,
-        formError: 'Failed to set schedule. Please try again.',
+        formError: errorMessage,
       }))
     }
   }
