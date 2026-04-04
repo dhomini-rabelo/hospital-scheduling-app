@@ -88,3 +88,56 @@ export interface ScheduleRequirement {
   createdAt: string
   updatedAt: string
 }
+
+export interface ScheduleEntry {
+  id: string
+  date: string
+  structure: ProfessionRequirement[]
+  createdAt: string
+  updatedAt: string
+}
+
+export interface ScheduleEntryWithAggregateData extends ScheduleEntry {
+  teamMembers: TeamMember[]
+  scheduleRequirements: ScheduleRequirement[]
+}
+
+export interface SpecialtyFulfillment {
+  specialty: string
+  requiredCount: number
+  assignedCount: number
+  isFulfilled: boolean
+}
+
+export interface ProfessionFulfillment {
+  profession: Profession
+  requiredCount: number
+  assignedCount: number
+  isFulfilled: boolean
+  specialties: SpecialtyFulfillment[]
+}
+
+export interface StructureFulfillment {
+  professions: ProfessionFulfillment[]
+}
+
+export interface RequirementFulfillment {
+  requirementId: string
+  dateReference: string
+  isFulfilled: boolean
+  professions: ProfessionFulfillment[]
+}
+
+export interface ScheduleOverviewEntry {
+  id: string
+  teamMember: TeamMember
+}
+
+export interface ScheduleOverview {
+  date: string
+  totalAssigned: number
+  entries: ScheduleOverviewEntry[]
+  scheduleRequirements: ScheduleRequirement[]
+  structureFulfillment: StructureFulfillment | null
+  requirementsFulfillment: RequirementFulfillment[]
+}
