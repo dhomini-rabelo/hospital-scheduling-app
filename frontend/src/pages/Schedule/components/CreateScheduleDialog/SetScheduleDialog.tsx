@@ -76,6 +76,8 @@ const VALIDATION_ERROR_MESSAGES: Record<string, (...variables: string[]) => stri
     `Too many ${profession}s selected: ${assigned} assigned but structure allows ${required}.`,
   SPECIALTY_COUNT_EXCEEDS_STRUCTURE: (specialty, assigned, required) =>
     `Too many ${specialty} specialists: ${assigned} assigned but structure allows ${required}.`,
+  NO_AVAILABLE_SLOT_FOR_SPECIALTY: (name, profession, specialty) =>
+    `${name} (${specialty} ${profession}) cannot be assigned — all ${profession} slots are reserved for other specialties.`,
   DATES_OUTSIDE_ALLOWED_RANGE: (...dates) =>
     `These dates are outside the allowed range: ${dates.join(', ')}.`,
   STRUCTURE_MUST_NOT_BE_EMPTY: () =>

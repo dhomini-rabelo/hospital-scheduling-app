@@ -90,6 +90,7 @@ export function validateTeamMembersAgainstStructure(
 
   const professionCounts = new Map<string, number>()
   const specialtyCounts = new Map<string, number>()
+  const unreservedCounts = new Map<string, number>()
 
   for (const teamMember of teamMembers) {
     const professionReq = structureByProfession.get(teamMember.props.profession)
@@ -135,6 +136,27 @@ export function validateTeamMembersAgainstStructure(
             teamMember.props.specialty,
             String(currentSpecialtyCount),
             String(specialtyReq.requiredCount),
+          ],
+        })
+      }
+    } else {
+      const reservedSlots = professionReq.specialtyRequirements.reduce(
+        (acc, sr) => acc + sr.requiredCount,
+        0,
+      )
+      const unreservedCapacity = professionReq.requiredCount - reservedSlots
+      const currentUnreservedCount =
+        (unreservedCounts.get(teamMember.props.profession) ?? 0) + 1
+      unreservedCounts.set(teamMember.props.profession, currentUnreservedCount)
+
+      if (currentUnreservedCount > unreservedCapacity) {
+        throw new ValidationError({
+          errorField: 'teamMemberIds',
+          code: 'NO_AVAILABLE_SLOT_FOR_SPECIALTY',
+          variables: [
+            teamMember.props.name,
+            teamMember.props.profession,
+            teamMember.props.specialty,
           ],
         })
       }
