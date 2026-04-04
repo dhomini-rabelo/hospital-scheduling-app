@@ -17,3 +17,14 @@ model TeamMember {
 
   @@map("team_members")
 }
+
+model ScheduleRequirement {
+  id            String   @id @default(uuid())
+  dateReference String   @unique @map("date_reference")
+  requirements  String
+  isEnabled     Boolean  @default(true) @map("is_enabled")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("schedule_requirements")
+}
