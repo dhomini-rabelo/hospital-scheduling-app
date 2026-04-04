@@ -70,7 +70,7 @@ export interface TeamMember {
 }
 
 export interface SpecialtyRequirement {
-  specialty: string
+  specialty: Specialty
   requiredCount: number
 }
 

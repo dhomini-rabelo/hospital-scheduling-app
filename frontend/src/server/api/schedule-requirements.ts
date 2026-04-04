@@ -3,6 +3,7 @@ import { API_ROUTES } from '@/server/routes'
 import type {
   Profession,
   ScheduleRequirement,
+  Specialty,
 } from '@/server/types/entities'
 
 export interface CreateScheduleRequirementInput {
@@ -11,7 +12,7 @@ export interface CreateScheduleRequirementInput {
     profession: Profession
     requiredCount: number
     specialtyRequirements: {
-      specialty: string
+      specialty: Specialty
       requiredCount: number
     }[]
   }[]
@@ -22,7 +23,7 @@ export interface UpdateScheduleRequirementInput {
     profession: Profession
     requiredCount: number
     specialtyRequirements: {
-      specialty: string
+      specialty: Specialty
       requiredCount: number
     }[]
   }[]

@@ -1,6 +1,9 @@
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { createScheduleRequirement } from '@/server/api/schedule-requirements'
+import {
+  createScheduleRequirement,
+  type CreateScheduleRequirementInput,
+} from '@/server/api/schedule-requirements'
 import { Profession } from '@/server/types/entities'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
@@ -106,7 +109,8 @@ export function CreateScheduleRequirementDialog({
       setState({ formError: null })
       await createScheduleRequirement({
         dateReference: data.dateReference,
-        requirements: data.requirements,
+        requirements:
+          data.requirements as unknown as CreateScheduleRequirementInput['requirements'],
       })
       onSuccess()
       onClose()

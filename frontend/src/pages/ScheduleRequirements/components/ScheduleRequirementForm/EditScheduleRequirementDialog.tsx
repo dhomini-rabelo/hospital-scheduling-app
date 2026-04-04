@@ -1,5 +1,8 @@
 import { Button } from '@/components/ui/Button'
-import { updateScheduleRequirement } from '@/server/api/schedule-requirements'
+import {
+  updateScheduleRequirement,
+  type UpdateScheduleRequirementInput,
+} from '@/server/api/schedule-requirements'
 import type { ScheduleRequirement } from '@/server/types/entities'
 import { Profession } from '@/server/types/entities'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -109,7 +112,8 @@ export function EditScheduleRequirementDialog({
     try {
       setState({ formError: null })
       await updateScheduleRequirement(requirement.id, {
-        requirements: data.requirements,
+        requirements:
+          data.requirements as unknown as UpdateScheduleRequirementInput['requirements'],
       })
       onSuccess()
       onClose()

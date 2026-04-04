@@ -41,12 +41,13 @@ export type Specialty =
   | TechnicianSpecialty
   | SupportStaffSpecialty
 
-export const PROFESSION_SPECIALTIES: Record<Profession, readonly string[]> = {
-  [Profession.DOCTOR]: Object.values(DoctorSpecialty),
-  [Profession.NURSE]: Object.values(NurseSpecialty),
-  [Profession.TECHNICIAN]: Object.values(TechnicianSpecialty),
-  [Profession.SUPPORT_STAFF]: Object.values(SupportStaffSpecialty),
-}
+export const PROFESSION_SPECIALTIES: Record<Profession, readonly Specialty[]> =
+  {
+    [Profession.DOCTOR]: Object.values(DoctorSpecialty),
+    [Profession.NURSE]: Object.values(NurseSpecialty),
+    [Profession.TECHNICIAN]: Object.values(TechnicianSpecialty),
+    [Profession.SUPPORT_STAFF]: Object.values(SupportStaffSpecialty),
+  }
 
 export type TeamMemberProps = {
   name: string

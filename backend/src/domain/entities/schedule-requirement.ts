@@ -1,13 +1,14 @@
+import { Profession, Specialty } from '@/domain/entities/team-member'
 import { Entity } from '@/modules/domain/entity'
 import { JsonField } from '@/modules/domain/json-field'
 
 export type SpecialtyRequirement = {
-  specialty: string
+  specialty: Specialty
   requiredCount: number
 }
 
 export type ProfessionRequirement = {
-  profession: string
+  profession: Profession
   requiredCount: number
   specialtyRequirements: SpecialtyRequirement[]
 }

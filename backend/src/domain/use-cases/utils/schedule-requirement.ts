@@ -35,7 +35,7 @@ export function validateRequirementsData(requirements: RequirementsData) {
     seenProfessions.add(professionRequirement.profession)
 
     const validSpecialties =
-      PROFESSION_SPECIALTIES[professionRequirement.profession as Profession]
+      PROFESSION_SPECIALTIES[professionRequirement.profession]
     const seenSpecialties = new Set<string>()
 
     for (const specialtyRequirement of professionRequirement.specialtyRequirements) {

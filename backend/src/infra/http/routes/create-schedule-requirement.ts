@@ -1,3 +1,4 @@
+import type { RequirementsData } from '@/domain/entities/schedule-requirement'
 import { Profession } from '@/domain/entities/team-member'
 import { CreateScheduleRequirementUseCase } from '@/domain/use-cases/schedule-requirement/create-schedule-requirement'
 import { PrismaScheduleRequirementRepository } from '@/infra/adapters/repository/prisma-schedule-requirement-repository'
@@ -32,7 +33,7 @@ export async function createScheduleRequirement(req: Request, res: Response) {
   const useCase = new CreateScheduleRequirementUseCase(repository)
   const { item } = await useCase.execute({
     dateReference: payload.dateReference,
-    requirements: payload.requirements,
+    requirements: payload.requirements as unknown as RequirementsData,
   })
 
   return res.status(201).json(presentScheduleRequirement(item))
