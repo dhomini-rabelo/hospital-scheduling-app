@@ -42,12 +42,17 @@ When writing code, it's important to follow established coding patterns to ensur
 - When to Use: Whenever you need to create or update reusable React components (UI or Common), including dialog flows and object-state based components.
 - Coding pattern: [React component patterns](./coding-patterns/react-components/index.md)
 
+#### Page Structure Pattern
+
+- When to Use: Whenever you need to create or organize page-level files and folders under `frontend/src/pages/`.
+- Coding pattern: [Page structure](./coding-patterns/page-structure.md)
+
+#### Minimum Props Strategies
+
+- When to Use: Whenever you need to create many components that may require sharing many states or actions.
+- Coding pattern: [Minimum props strategies](./coding-patterns/minimum-props-strategies.md)
+
 #### Use Case Classes Patterns
 
 - When to Use: Whenever you need to implement or update domain application use case classes.
 - Coding pattern: [Use case class patterns](./coding-patterns/use-case-classes/index.md)
-
-### How to use Repositories
-
-- When to Use: Whenever you need to interact with the database or data sources through repositories.
-- Coding pattern: [How to use repositories](./coding-patterns/how-to-use-repositories/index.md)
