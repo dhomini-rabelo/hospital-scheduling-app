@@ -1,14 +1,14 @@
 import { useAPIRequest } from '@/layout/hooks/useAPIRequest'
 import { useDialogs } from '@/layout/hooks/useDialogs'
 import {
-  disableScheduleRequirement,
-  enableScheduleRequirement,
+    disableScheduleRequirement,
+    enableScheduleRequirement,
 } from '@/server/api/schedule-requirements'
 import { API_ROUTES } from '@/server/routes'
 import type { ScheduleRequirement } from '@/server/types/entities'
 import { ClipboardList, Loader2 } from 'lucide-react'
 import { useState } from 'react'
-import { EditScheduleRequirementDialog } from '../ScheduleRequirementForm/EditScheduleRequirementDialog'
+import { EditScheduleRequirementDialog } from '../CreateScheduleRequirementDialog/EditScheduleRequirementDialog'
 import { DeleteScheduleRequirementDialog } from './DeleteScheduleRequirementDialog'
 import { ScheduleRequirementRow } from './ScheduleRequirementRow'
 

@@ -3,7 +3,7 @@ import { useDialogs } from '@/layout/hooks/useDialogs'
 import { API_ROUTES } from '@/server/routes'
 import { useQueryClient } from '@tanstack/react-query'
 import { Plus, Users } from 'lucide-react'
-import { CreateTeamMemberDialog } from './components/TeamMemberForm/CreateTeamMemberDialog'
+import { CreateTeamMemberDialog } from './components/CreateTeamMemberDialog/CreateTeamMemberDialog'
 import { TeamMemberList } from './components/TeamMemberList/TeamMemberList'
 
 export function TeamMembers() {

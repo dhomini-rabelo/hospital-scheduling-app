@@ -3,7 +3,7 @@ import { useDialogs } from '@/layout/hooks/useDialogs'
 import { API_ROUTES } from '@/server/routes'
 import { useQueryClient } from '@tanstack/react-query'
 import { ClipboardList, Plus } from 'lucide-react'
-import { CreateScheduleRequirementDialog } from './components/ScheduleRequirementForm/CreateScheduleRequirementDialog'
+import { CreateScheduleRequirementDialog } from './components/CreateScheduleRequirementDialog/CreateScheduleRequirementDialog'
 import { ScheduleRequirementList } from './components/ScheduleRequirementList/ScheduleRequirementList'
 
 export function ScheduleRequirements() {
