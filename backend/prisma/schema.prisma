@@ -15,7 +15,34 @@ model TeamMember {
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
+  scheduleEntryTeamMemberMaps ScheduleEntryTeamMemberMap[]
+
   @@map("team_members")
+}
+
+model ScheduleEntry {
+  id        String   @id @default(uuid())
+  date      String   @unique
+  structure String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  teamMembers ScheduleEntryTeamMemberMap[]
+
+  @@map("schedule_entries")
+}
+
+model ScheduleEntryTeamMemberMap {
+  id              String        @id @default(uuid())
+  scheduleEntryId String        @map("schedule_entry_id")
+  teamMemberId    String        @map("team_member_id")
+  scheduleEntry   ScheduleEntry @relation(fields: [scheduleEntryId], references: [id], onDelete: Cascade)
+  teamMember      TeamMember    @relation(fields: [teamMemberId], references: [id])
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+
+  @@unique([scheduleEntryId, teamMemberId])
+  @@map("schedule_entry_team_members")
 }
 
 model ScheduleRequirement {

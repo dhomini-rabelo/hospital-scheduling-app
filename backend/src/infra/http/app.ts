@@ -1,12 +1,16 @@
 import { errorHandler } from '@/infra/http/error-handler'
 import { createScheduleRequirement } from '@/infra/http/routes/create-schedule-requirement'
 import { createTeamMembers } from '@/infra/http/routes/create-team-members'
+import { deleteScheduleEntry } from '@/infra/http/routes/delete-schedule-entry'
 import { deleteScheduleRequirement } from '@/infra/http/routes/delete-schedule-requirement'
 import { deleteTeamMember } from '@/infra/http/routes/delete-team-member'
 import { disableScheduleRequirement } from '@/infra/http/routes/disable-schedule-requirement'
 import { enableScheduleRequirement } from '@/infra/http/routes/enable-schedule-requirement'
+import { getScheduleOverview } from '@/infra/http/routes/get-schedule-overview'
+import { listScheduleEntries } from '@/infra/http/routes/list-schedule-entries'
 import { listScheduleRequirements } from '@/infra/http/routes/list-schedule-requirements'
 import { listTeamMembers } from '@/infra/http/routes/list-team-members'
+import { setScheduleEntries } from '@/infra/http/routes/set-schedule-entries'
 import { updateScheduleRequirement } from '@/infra/http/routes/update-schedule-requirement'
 import { updateTeamMember } from '@/infra/http/routes/update-team-member'
 import cors from 'cors'
@@ -35,6 +39,12 @@ app.put('/schedule-requirements/:id', updateScheduleRequirement)
 app.patch('/schedule-requirements/:id/enable', enableScheduleRequirement)
 app.patch('/schedule-requirements/:id/disable', disableScheduleRequirement)
 app.delete('/schedule-requirements/:id', deleteScheduleRequirement)
+
+// Schedule Entry routes
+app.put('/schedule-entries', setScheduleEntries)
+app.get('/schedule-entries', listScheduleEntries)
+app.delete('/schedule-entries/:id', deleteScheduleEntry)
+app.get('/schedule-overview', getScheduleOverview)
 
 // Error handling (must be after all routes)
 app.use(errorHandler)
