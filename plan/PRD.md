@@ -1,8 +1,8 @@
 ---
-version: 1.0.0
+version: 1.1.0
 owner: dhomini-rabelo
 status: draft
-last_updated: 2026-04-01
+last_updated: 2026-04-04
 dependencies: []
 llm_directives:
   temperature: 0.2
@@ -19,7 +19,7 @@ llm_directives:
 
 ### 1.1 Product Summary
 
-A hospital staff scheduling application that enables administrators to manage a roster of hospital staff, define minimum staffing requirements per profession and specialty, and automatically generate weekly schedules. The application features an AI-powered chat interface that allows users to perform all scheduling actions through natural language commands instead of traditional UI controls. Staff are scheduled at the day level (which team members work each day of the week), and the system ensures all department staffing rules are satisfied.
+A hospital staff scheduling application that enables administrators to manage a roster of hospital staff, define minimum staffing requirements per profession and specialty, and automatically generate weekly schedules. The application features an AI-powered chat interface that allows users to perform all scheduling actions through natural language commands instead of traditional UI controls. Staff are scheduled at the day level (which team members work each day of the week), and the system ensures all department staffing rules are satisfied. Staffing rules are defined against date references (e.g., weekday, weekend, monday, 1st of the month) and specify both total profession counts and specialty sub-requirements.
 
 ### 1.2 Business Goals
 
@@ -32,7 +32,8 @@ A hospital staff scheduling application that enables administrators to manage a 
 The system is built around the following core entities:
 
 * **Team Member**: A hospital staff member with a name, profession, specialty, and active/inactive status. Represents anyone who can be scheduled (doctors, nurses, technicians, support staff).
-* **Schedule Requirement**: A staffing rule that defines how many staff of a given profession and specialty are needed per day type (weekday vs weekend). Example: "3 Neurologist Doctors on weekdays, 5 on weekends."
+* **Date Reference**: A label used to categorize days for staffing rules. Examples: "weekday", "weekend", "monday", "1st of the month". Date references are user-defined labels that are matched against calendar dates when evaluating schedule requirements.
+* **Schedule Requirement**: A staffing rule that defines how many staff of a given profession are needed for a specific date reference, and optionally how many of those must be from specific specialties. Schedule requirements can be enabled or disabled. Example: "5 Doctors on weekdays — of which 2 must be Neurologists and 1 must be a Cardiologist."
 * **Schedule Entry**: A single assignment of a team member to a specific date. The collection of all entries for a week forms the weekly schedule.
 
 ### 1.4 Professions & Specialties
@@ -77,7 +78,7 @@ The system supports the following hospital roles:
 
 **IMPORTANT**: Each user story and acceptance criterion has a unique, machine-readable ID.
 
-### **US-001**: Manage Team Members
+### **US-001**: Manage Team Members ✅ COMPLETED
 
 * **As a**: Persona-Admin
 * **I want to**: Add, edit, and remove hospital staff members with their profession and specialty
@@ -97,18 +98,21 @@ The system supports the following hospital roles:
 ### **US-002**: Define Schedule Requirements
 
 * **As a**: Persona-Admin
-* **I want to**: Configure how many staff of each profession and specialty are needed per day type (weekday vs weekend)
+* **I want to**: Configure how many staff of each profession are needed per date reference, and how many of those must be from specific specialties
 * **So that**: The auto-fill algorithm knows the minimum staffing levels to satisfy
 
 **Acceptance Criteria**:
 
-* **AC-002-A**: The system MUST allow creating a schedule requirement with: profession, specialty, day type (weekday or weekend), and required count (positive integer)
-* **AC-002-B**: The system MUST prevent duplicate rules for the same combination of profession, specialty, and day type
-* **AC-002-C**: The system MUST allow editing the required count of an existing schedule requirement
-* **AC-002-D**: The system MUST allow deleting a schedule requirement
-* **AC-002-E**: The system MUST display all current schedule requirements in a table format
-* **AC-002-F**: The system MUST persist all schedule requirements in SQLite
-* **AC-002-G**: The Schedule Requirements page MUST be accessible via the sidebar navigation
+* **AC-002-A**: The system MUST allow creating a schedule requirement with: profession, date reference (e.g., weekday, weekend, monday, 1st of the month), and required count (positive integer representing total staff of that profession needed)
+* **AC-002-B**: The system MUST allow specifying specialty sub-requirements within a schedule requirement, defining how many of the total required staff must be from a specific specialty (e.g., "of 5 Doctors, 2 must be Neurologists and 1 must be a Cardiologist")
+* **AC-002-C**: The system MUST prevent duplicate rules for the same combination of profession and date reference
+* **AC-002-D**: The system MUST validate that the sum of specialty sub-requirements does not exceed the total required count for the profession
+* **AC-002-E**: The system MUST allow editing the required count and specialty sub-requirements of an existing schedule requirement
+* **AC-002-F**: The system MUST allow deleting a schedule requirement
+* **AC-002-G**: The system MUST allow enabling or disabling a schedule requirement. Disabled requirements are ignored by the auto-fill algorithm and schedule validation but remain persisted for future use
+* **AC-002-H**: The system MUST display all current schedule requirements in a table format, with a clear visual indicator for disabled requirements
+* **AC-002-I**: The system MUST persist all schedule requirements in SQLite
+* **AC-002-J**: The Schedule Requirements page MUST be accessible via the sidebar navigation
 
 ### **US-003**: View Weekly Schedule
 
@@ -121,7 +125,7 @@ The system supports the following hospital roles:
 * **AC-003-A**: The system MUST display a weekly view with 7 day columns (Monday through Sunday)
 * **AC-003-B**: Each day column MUST show the assigned team members, grouped by profession and specialty
 * **AC-003-C**: The system MUST allow navigating to the previous and next week
-* **AC-003-D**: The system MUST visually highlight days where the assigned staff count does not meet the schedule requirements for any profession/specialty
+* **AC-003-D**: The system MUST visually highlight days where the assigned staff count does not meet the enabled schedule requirements for any profession/specialty
 * **AC-003-E**: The Schedule View MUST be the default landing page of the application
 * **AC-003-F**: The Schedule View page MUST be accessible via the sidebar navigation
 
@@ -133,7 +137,7 @@ The system supports the following hospital roles:
 
 **Acceptance Criteria**:
 
-* **AC-004-A**: The system MUST auto-fill the schedule for a selected week based on all active schedule requirements
+* **AC-004-A**: The system MUST auto-fill the schedule for a selected week based on all enabled schedule requirements
 * **AC-004-B**: The system MUST only assign team members whose profession and specialty match the requirement being filled
 * **AC-004-C**: The system MUST distribute assignments fairly across eligible team members to avoid scheduling the same person every single day
 * **AC-004-D**: The system MUST report to the user when requirements cannot be fully met due to insufficient staff, indicating which profession/specialty is short-staffed
@@ -242,7 +246,7 @@ The system supports the following hospital roles:
 US-001, US-002, US-003, US-004, US-005, US-006, US-007
 
 ### Acceptance Criteria
-AC-001-A through AC-001-G, AC-002-A through AC-002-G, AC-003-A through AC-003-F, AC-004-A through AC-004-F, AC-005-A through AC-005-D, AC-006-A through AC-006-G, AC-007-A through AC-007-E
+AC-001-A through AC-001-H, AC-002-A through AC-002-J, AC-003-A through AC-003-F, AC-004-A through AC-004-F, AC-005-A through AC-005-D, AC-006-A through AC-006-G, AC-007-A through AC-007-E
 
 ### Non-Functional Requirements
 NFR-Perf-001, NFR-Perf-002, NFR-Sec-001, NFR-Sec-002, NFR-Use-001, NFR-Use-002
@@ -257,3 +261,4 @@ KPI-001, KPI-002, KPI-003, KPI-004
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0.0 | 2026-04-01 | dhomini-rabelo | Initial draft |
+| 1.1.0 | 2026-04-04 | dhomini-rabelo | Marked US-001 as completed. Replaced "day type" with "date reference" as a flexible label (weekday, weekend, monday, 1st of the month, etc.). Reworked schedule requirements: now define total profession count per date reference with optional specialty sub-requirements. Added ability to enable/disable schedule requirements. |
