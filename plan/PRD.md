@@ -1,5 +1,5 @@
 ---
-version: 1.1.0
+version: 1.2.0
 owner: dhomini-rabelo
 status: draft
 last_updated: 2026-04-04
@@ -95,7 +95,7 @@ The system supports the following hospital roles:
 * **AC-001-G**: The Team Members page MUST be accessible via the sidebar navigation
 * **AC-001-H**: The backend API MUST accept an array of team members in a single POST request and create all of them atomically (all succeed or all fail)
 
-### **US-002**: Define Schedule Requirements
+### **US-002**: Define Schedule Requirements ✅ COMPLETED
 
 * **As a**: Persona-Admin
 * **I want to**: Configure how many staff of each profession are needed per date reference, and how many of those must be from specific specialties
@@ -114,20 +114,42 @@ The system supports the following hospital roles:
 * **AC-002-I**: The system MUST persist all schedule requirements in SQLite
 * **AC-002-J**: The Schedule Requirements page MUST be accessible via the sidebar navigation
 
-### **US-003**: View Weekly Schedule
+### **US-003**: View & Create Schedules
 
 * **As a**: Persona-Admin
-* **I want to**: See a weekly calendar showing which team members are assigned to each day
-* **So that**: I can verify staffing coverage and identify gaps
+* **I want to**: See a daily schedule overview for the current and next week, and create schedules by selecting date ranges and staffing structures
+* **So that**: I can verify staffing coverage, identify gaps, and build schedules with full control over which requirements and staffing levels apply
 
 **Acceptance Criteria**:
 
-* **AC-003-A**: The system MUST display a weekly view with 7 day columns (Monday through Sunday)
-* **AC-003-B**: Each day column MUST show the assigned team members, grouped by profession and specialty
-* **AC-003-C**: The system MUST allow navigating to the previous and next week
-* **AC-003-D**: The system MUST visually highlight days where the assigned staff count does not meet the enabled schedule requirements for any profession/specialty
-* **AC-003-E**: The Schedule View MUST be the default landing page of the application
-* **AC-003-F**: The Schedule View page MUST be accessible via the sidebar navigation
+#### Mini Calendar Navigation
+
+* **AC-003-A**: The system MUST display a mini calendar at the top of the schedule page showing all dates for the current week (Monday through Sunday)
+* **AC-003-B**: The mini calendar MUST be horizontally scrollable to reveal the next week's dates (Monday through Sunday of the following week)
+* **AC-003-C**: The mini calendar MUST always have exactly one selected day. The default selected day is today (or the nearest available day)
+* **AC-003-D**: The system MUST restrict schedule viewing and manipulation to only the current week and the next week. No past weeks or weeks beyond next week are accessible
+
+#### Schedule Overview (Main Component)
+
+* **AC-003-E**: Below the mini calendar, the system MUST display a complete schedule overview for the selected day
+* **AC-003-F**: The schedule overview MUST show which enabled schedule requirements are fulfilled and which are not fulfilled for the selected day
+* **AC-003-G**: The schedule overview MUST display the total count of doctors scheduled and a breakdown by specialty for the selected day
+* **AC-003-H**: The schedule overview MUST display the total count of each profession scheduled for the selected day
+* **AC-003-I**: The schedule overview MUST list the selected (assigned) team members for the selected day
+* **AC-003-J**: The schedule overview MUST clearly indicate staffing gaps — where the assigned staff count does not meet the enabled schedule requirements for any profession or specialty
+
+#### Schedule Creation Form
+
+* **AC-003-K**: The system MUST provide a form for the admin to create a new schedule
+* **AC-003-L**: The schedule creation form MUST include a date range selector. The date range MUST be constrained to dates within the current week and the next week only
+* **AC-003-M**: The schedule creation form MUST allow the admin to select which schedule requirements to apply to the new schedule
+* **AC-003-N**: The schedule creation form MUST allow the admin to define the staffing structure: how many of each profession and how many of each specialty within a profession are needed
+* **AC-003-O**: The system MUST persist the created schedule entries in SQLite
+
+#### General
+
+* **AC-003-P**: The Schedule View MUST be the default landing page of the application
+* **AC-003-Q**: The Schedule View page MUST be accessible via the sidebar navigation
 
 ### **US-004**: Auto-fill Schedule
 
@@ -246,7 +268,7 @@ The system supports the following hospital roles:
 US-001, US-002, US-003, US-004, US-005, US-006, US-007
 
 ### Acceptance Criteria
-AC-001-A through AC-001-H, AC-002-A through AC-002-J, AC-003-A through AC-003-F, AC-004-A through AC-004-F, AC-005-A through AC-005-D, AC-006-A through AC-006-G, AC-007-A through AC-007-E
+AC-001-A through AC-001-H, AC-002-A through AC-002-J, AC-003-A through AC-003-Q, AC-004-A through AC-004-F, AC-005-A through AC-005-D, AC-006-A through AC-006-G, AC-007-A through AC-007-E
 
 ### Non-Functional Requirements
 NFR-Perf-001, NFR-Perf-002, NFR-Sec-001, NFR-Sec-002, NFR-Use-001, NFR-Use-002
@@ -262,3 +284,4 @@ KPI-001, KPI-002, KPI-003, KPI-004
 |---------|------|--------|---------|
 | 1.0.0 | 2026-04-01 | dhomini-rabelo | Initial draft |
 | 1.1.0 | 2026-04-04 | dhomini-rabelo | Marked US-001 as completed. Replaced "day type" with "date reference" as a flexible label (weekday, weekend, monday, 1st of the month, etc.). Reworked schedule requirements: now define total profession count per date reference with optional specialty sub-requirements. Added ability to enable/disable schedule requirements. |
+| 1.2.0 | 2026-04-04 | dhomini-rabelo | Marked US-002 as completed. Rewrote US-003 from a weekly grid view to a day-focused view with: mini calendar (current + next week only), daily schedule overview (requirement fulfillment, profession/specialty counts, assigned members, gaps), and a schedule creation form (date range, applied requirements, staffing structure). |
