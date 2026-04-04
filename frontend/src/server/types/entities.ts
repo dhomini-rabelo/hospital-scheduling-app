@@ -68,3 +68,23 @@ export interface TeamMember {
   createdAt: string
   updatedAt: string
 }
+
+export interface SpecialtyRequirement {
+  specialty: string
+  requiredCount: number
+}
+
+export interface ProfessionRequirement {
+  profession: Profession
+  requiredCount: number
+  specialtyRequirements: SpecialtyRequirement[]
+}
+
+export interface ScheduleRequirement {
+  id: string
+  dateReference: string
+  requirements: ProfessionRequirement[]
+  isEnabled: boolean
+  createdAt: string
+  updatedAt: string
+}
