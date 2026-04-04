@@ -1,5 +1,5 @@
-function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
-}
+import { AppRouter } from '@/layout/router/Router'
 
-export default App;
+export function App() {
+  return <AppRouter />
+}
