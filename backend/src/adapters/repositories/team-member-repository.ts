@@ -9,6 +9,10 @@ export abstract class TeamMemberRepository {
     props: Omit<TeamMemberProps, 'createdAt' | 'updatedAt'>,
   ): Promise<TeamMember>
 
+  abstract createMany(
+    items: Omit<TeamMemberProps, 'createdAt' | 'updatedAt'>[],
+  ): Promise<TeamMember[]>
+
   abstract findById(id: string): Promise<TeamMember | null>
 
   abstract findAll(profession?: Profession): Promise<TeamMember[]>

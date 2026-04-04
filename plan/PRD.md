@@ -85,13 +85,14 @@ The system supports the following hospital roles:
 
 **Acceptance Criteria**:
 
-* **AC-001-A**: The system MUST allow creating a team member with: name, profession (Doctor, Nurse, Technician, Support Staff), and specialty (from the valid specialties for the chosen profession)
-* **AC-001-B**: The system MUST validate that the selected specialty is valid for the chosen profession
+* **AC-001-A**: The system MUST allow creating one or more team members at once through a batch creation form. Each team member entry includes: name, profession (Doctor, Nurse, Technician, Support Staff), and specialty (from the valid specialties for the chosen profession). The form MUST allow adding multiple rows before submitting them all in a single request.
+* **AC-001-B**: The system MUST validate that the selected specialty is valid for the chosen profession for every team member in the batch
 * **AC-001-C**: The system MUST allow editing a team member's name, profession, and specialty
 * **AC-001-D**: The system MUST allow deleting a team member from the roster
 * **AC-001-E**: The system MUST display all team members in a list, filterable by profession
 * **AC-001-F**: The system MUST persist all team member data in SQLite
 * **AC-001-G**: The Team Members page MUST be accessible via the sidebar navigation
+* **AC-001-H**: The backend API MUST accept an array of team members in a single POST request and create all of them atomically (all succeed or all fail)
 
 ### **US-002**: Define Schedule Requirements
 

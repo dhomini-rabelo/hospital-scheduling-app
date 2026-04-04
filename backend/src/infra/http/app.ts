@@ -1,5 +1,5 @@
 import { errorHandler } from '@/infra/http/error-handler'
-import { createTeamMember } from '@/infra/http/routes/create-team-member'
+import { createTeamMembers } from '@/infra/http/routes/create-team-members'
 import { deleteTeamMember } from '@/infra/http/routes/delete-team-member'
 import { listTeamMembers } from '@/infra/http/routes/list-team-members'
 import { updateTeamMember } from '@/infra/http/routes/update-team-member'
@@ -17,7 +17,7 @@ app.get('/health', (req, res) => {
 })
 
 // Team Member routes
-app.post('/team-members', createTeamMember)
+app.post('/team-members', createTeamMembers)
 app.get('/team-members', listTeamMembers)
 app.put('/team-members/:id', updateTeamMember)
 app.delete('/team-members/:id', deleteTeamMember)

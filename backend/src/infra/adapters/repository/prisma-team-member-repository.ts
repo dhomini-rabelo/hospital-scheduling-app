@@ -39,6 +39,20 @@ export class PrismaTeamMemberRepository implements TeamMemberRepository {
     return toEntity(record)
   }
 
+  async createMany(
+    items: Omit<TeamMemberProps, 'createdAt' | 'updatedAt'>[],
+  ): Promise<TeamMember[]> {
+    const records = await prisma.teamMember.createManyAndReturn({
+      data: items.map((props) => ({
+        name: props.name,
+        profession: props.profession,
+        specialty: props.specialty,
+      })),
+    })
+
+    return records.map(toEntity)
+  }
+
   async findById(id: string): Promise<TeamMember | null> {
     const record = await prisma.teamMember.findUnique({ where: { id } })
     if (!record) return null
