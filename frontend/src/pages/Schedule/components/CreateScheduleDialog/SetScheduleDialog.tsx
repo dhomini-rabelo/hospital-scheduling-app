@@ -11,6 +11,7 @@ import { z } from 'zod'
 import { DateSelector } from './DateSelector'
 import { RequirementSelector } from './RequirementSelector'
 import { StructureProfessionRow } from './StructureProfessionRow'
+import { StructureSummary } from './StructureSummary'
 import { TeamMemberSelector } from './TeamMemberSelector'
 
 const specialtyRequirementSchema = z.object({
@@ -295,6 +296,13 @@ export function SetScheduleDialog({
 
             {state.stage === 'team-members' && (
               <>
+                <div className="flex flex-col gap-2">
+                  <span className="font-heading text-sm font-semibold text-text-secondary">
+                    Staffing Structure
+                  </span>
+                  <StructureSummary />
+                </div>
+
                 <div className="flex flex-col gap-2">
                   <span className="font-heading text-sm font-semibold text-text-secondary">
                     Assign Team Members

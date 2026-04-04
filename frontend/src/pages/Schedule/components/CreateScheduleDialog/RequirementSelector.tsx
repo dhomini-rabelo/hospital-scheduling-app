@@ -2,18 +2,25 @@ import { useAPIRequest } from '@/layout/hooks/useAPIRequest'
 import { API_ROUTES } from '@/server/routes'
 import {
   PROFESSION_LABELS,
+  type ProfessionRequirement,
   type ScheduleRequirement,
+  formatSpecialtyLabel,
 } from '@/server/types/entities'
 import { Loader2 } from 'lucide-react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import type { SetScheduleSchema } from './SetScheduleDialog'
 
-function formatRequirementSummary(requirement: ScheduleRequirement): string {
-  return requirement.requirements
-    .map(
-      (r) => `${r.requiredCount} ${PROFESSION_LABELS[r.profession]}${r.requiredCount > 1 ? 's' : ''}`,
-    )
+function formatProfessionSummary(requirement: ProfessionRequirement): string {
+  const professionLabel = `${requirement.requiredCount} ${PROFESSION_LABELS[requirement.profession]}${requirement.requiredCount > 1 ? 's' : ''}`
+  if (requirement.specialtyRequirements.length === 0) return professionLabel
+  const specialtySummary = requirement.specialtyRequirements
+    .map((s) => `${s.requiredCount} ${formatSpecialtyLabel(s.specialty)}`)
     .join(', ')
+  return `${professionLabel} (${specialtySummary})`
+}
+
+function formatRequirementSummary(requirement: ScheduleRequirement): string {
+  return requirement.requirements.map(formatProfessionSummary).join(', ')
 }
 
 export function RequirementSelector() {
