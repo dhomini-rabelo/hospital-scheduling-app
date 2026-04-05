@@ -1,8 +1,9 @@
 import { Button } from '@/layout/components/ui/Button'
+import { useChatEntryPoint } from '@/layout/hooks/useChatEntryPoint'
 import { useDialogs } from '@/layout/hooks/useDialogs'
 import { API_ROUTES } from '@/server/routes'
 import { useQueryClient } from '@tanstack/react-query'
-import { ClipboardList, Plus } from 'lucide-react'
+import { Bot, ClipboardList, Plus } from 'lucide-react'
 import { CreateScheduleRequirementDialog } from './components/CreateScheduleRequirementDialog/CreateScheduleRequirementDialog'
 import { ScheduleRequirementList } from './components/ScheduleRequirementList/ScheduleRequirementList'
 
@@ -10,11 +11,18 @@ export function ScheduleRequirements() {
   const { currentActiveDialog, activateDialog, disableDialog } =
     useDialogs<'create'>()
   const queryClient = useQueryClient()
+  const { openChatWithPrompt } = useChatEntryPoint()
 
   function handleMutationSuccess() {
     queryClient.invalidateQueries({
       queryKey: [API_ROUTES.scheduleRequirements.list],
     })
+  }
+
+  function handleConfigureWithAI() {
+    openChatWithPrompt(
+      'I need the following staffing rules:\n\n - (example)',
+    )
   }
 
   return (
@@ -31,10 +39,16 @@ export function ScheduleRequirements() {
             </p>
           </div>
         </div>
-        <Button onClick={() => activateDialog('create')}>
-          <Plus size={16} />
-          Add Requirement
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button variant="secondary" onClick={handleConfigureWithAI}>
+            <Bot size={16} />
+            Configure with AI
+          </Button>
+          <Button onClick={() => activateDialog('create')}>
+            <Plus size={16} />
+            Add Requirement
+          </Button>
+        </div>
       </div>
       {currentActiveDialog === 'create' && (
         <CreateScheduleRequirementDialog

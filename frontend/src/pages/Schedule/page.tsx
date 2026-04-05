@@ -1,14 +1,19 @@
 import { Button } from '@/layout/components/ui/Button'
+import { useChatEntryPoint } from '@/layout/hooks/useChatEntryPoint'
 import { useDialogs } from '@/layout/hooks/useDialogs'
 import { API_ROUTES } from '@/server/routes'
 import { useQueryClient } from '@tanstack/react-query'
-import { Calendar, Settings, Sparkles } from 'lucide-react'
+import { Bot, Calendar, Settings, Sparkles } from 'lucide-react'
 import { useState } from 'react'
 import { AutoFillDialog } from './components/AutoFillDialog/AutoFillDialog'
 import { SetScheduleDialog } from './components/CreateScheduleDialog/SetScheduleDialog'
 import { MiniCalendar } from './components/MiniCalendar/MiniCalendar'
 import { ScheduleOverview } from './components/ScheduleOverview/ScheduleOverview'
-import { getTodayISO } from './utils/schedule-dates'
+import {
+  formatDateToISO,
+  getMondayOfWeek,
+  getTodayISO,
+} from './utils/schedule-dates'
 
 interface SchedulePageState {
   selectedDate: string
@@ -21,6 +26,7 @@ export function Schedule() {
   const { currentActiveDialog, activateDialog, disableDialog } =
     useDialogs<'create' | 'auto-fill'>()
   const queryClient = useQueryClient()
+  const { openChatWithPrompt } = useChatEntryPoint()
 
   function handleSelectDate(date: string) {
     setState((previousState) => ({
@@ -33,6 +39,15 @@ export function Schedule() {
     queryClient.invalidateQueries({
       queryKey: [API_ROUTES.scheduleEntries.overview],
     })
+  }
+
+  function handleScheduleWithAI() {
+    const today = new Date()
+    today.setUTCHours(0, 0, 0, 0)
+    const weekStart = formatDateToISO(getMondayOfWeek(today))
+    openChatWithPrompt(
+      `For the schedule of the week of ${weekStart}:\n\n - (example)`,
+    )
   }
 
   return (
@@ -50,6 +65,10 @@ export function Schedule() {
           </div>
         </div>
         <div className="flex items-center gap-3">
+          <Button variant="secondary" onClick={handleScheduleWithAI}>
+            <Bot size={16} />
+            Schedule with AI
+          </Button>
           <Button
             variant="secondary"
             onClick={() => activateDialog('auto-fill')}
