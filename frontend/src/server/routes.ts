@@ -18,5 +18,6 @@ export const API_ROUTES = {
     list: '/schedule-entries',
     delete: (id: string) => `/schedule-entries/${id}`,
     overview: '/schedule-overview',
+    autoFill: '/schedule-entries/auto-fill',
   },
 } as const

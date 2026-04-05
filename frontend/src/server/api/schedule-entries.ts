@@ -1,6 +1,7 @@
 import { client } from '@/core/api-client'
 import { API_ROUTES } from '@/server/routes'
 import type {
+  AutoFillResponse,
   ProfessionRequirement,
   ScheduleEntry,
   ScheduleEntryWithAggregateData,
@@ -10,7 +11,6 @@ import type {
 export interface SetScheduleEntriesInput {
   dates: string[]
   structure: ProfessionRequirement[]
-  teamMemberIds: string[]
   scheduleRequirementIds: string[]
 }
 
@@ -45,6 +45,16 @@ export async function fetchScheduleOverview(
   const response = await client.get<ScheduleOverview>(
     API_ROUTES.scheduleEntries.overview,
     { params: { date } },
+  )
+  return response.data
+}
+
+export async function autoFillSchedule(
+  data: { weekStartDate: string },
+): Promise<AutoFillResponse> {
+  const response = await client.post<AutoFillResponse>(
+    API_ROUTES.scheduleEntries.autoFill,
+    data,
   )
   return response.data
 }

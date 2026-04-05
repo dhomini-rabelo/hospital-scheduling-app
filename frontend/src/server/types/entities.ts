@@ -141,3 +141,33 @@ export interface ScheduleOverview {
   structureFulfillment: StructureFulfillment | null
   requirementsFulfillment: RequirementFulfillment[]
 }
+
+export interface SpecialtyGap {
+  specialty: Specialty
+  requiredCount: number
+  assignedCount: number
+  deficit: number
+}
+
+export interface ProfessionGap {
+  profession: Profession
+  requiredCount: number
+  assignedCount: number
+  deficit: number
+  specialtyGaps: SpecialtyGap[]
+}
+
+export interface DayGap {
+  date: string
+  professionGaps: ProfessionGap[]
+}
+
+export interface AutoFillGapReport {
+  hasGaps: boolean
+  days: DayGap[]
+}
+
+export interface AutoFillResponse {
+  entries: ScheduleEntry[]
+  gapReport: AutoFillGapReport
+}

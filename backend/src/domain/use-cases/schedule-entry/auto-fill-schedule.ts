@@ -9,7 +9,7 @@ import {
 } from '@/domain/entities/team-member'
 import {
   getWeekDates,
-  validateDatesInSetRange,
+  validateDatesInViewRange,
   validateIsMonday,
 } from '@/domain/utils/schedule'
 import { UseCase } from '@/modules/domain/use-case'
@@ -57,7 +57,7 @@ export class AutoFillScheduleUseCase implements UseCase<Response> {
   async execute(payload: Payload): Promise<Response> {
     validateIsMonday(payload.weekStartDate)
     const weekDates = getWeekDates(payload.weekStartDate)
-    validateDatesInSetRange(weekDates)
+    validateDatesInViewRange(weekDates)
 
     const weekEndDate = weekDates[weekDates.length - 1]
     const existingEntries = await this.scheduleEntryRepository.findByDateRange(

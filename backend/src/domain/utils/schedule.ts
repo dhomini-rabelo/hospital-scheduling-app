@@ -135,3 +135,19 @@ export function validateDatesInSetRange(dates: string[]): void {
     })
   }
 }
+
+export function validateDatesInViewRange(dates: string[]): void {
+  const range = getAllowedViewRange()
+
+  const invalidDates = dates.filter(
+    (date) => date < range.start || date > range.end,
+  )
+
+  if (invalidDates.length > 0) {
+    throw new ValidationError({
+      errorField: 'dates',
+      code: 'DATES_OUTSIDE_ALLOWED_RANGE',
+      variables: invalidDates,
+    })
+  }
+}

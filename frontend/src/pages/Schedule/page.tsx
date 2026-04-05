@@ -2,8 +2,9 @@ import { Button } from '@/layout/components/ui/Button'
 import { useDialogs } from '@/layout/hooks/useDialogs'
 import { API_ROUTES } from '@/server/routes'
 import { useQueryClient } from '@tanstack/react-query'
-import { Calendar, Settings } from 'lucide-react'
+import { Calendar, Settings, Sparkles } from 'lucide-react'
 import { useState } from 'react'
+import { AutoFillDialog } from './components/AutoFillDialog/AutoFillDialog'
 import { SetScheduleDialog } from './components/CreateScheduleDialog/SetScheduleDialog'
 import { MiniCalendar } from './components/MiniCalendar/MiniCalendar'
 import { ScheduleOverview } from './components/ScheduleOverview/ScheduleOverview'
@@ -18,7 +19,7 @@ export function Schedule() {
     selectedDate: getTodayISO(),
   })
   const { currentActiveDialog, activateDialog, disableDialog } =
-    useDialogs<'create'>()
+    useDialogs<'create' | 'auto-fill'>()
   const queryClient = useQueryClient()
 
   function handleSelectDate(date: string) {
@@ -48,14 +49,30 @@ export function Schedule() {
             </p>
           </div>
         </div>
-        <Button onClick={() => activateDialog('create')}>
-          <Settings size={16} />
-          Set Schedule
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button
+            variant="secondary"
+            onClick={() => activateDialog('auto-fill')}
+          >
+            <Sparkles size={16} />
+            Auto-fill
+          </Button>
+          <Button onClick={() => activateDialog('create')}>
+            <Settings size={16} />
+            Set Schedule
+          </Button>
+        </div>
       </div>
 
       {currentActiveDialog === 'create' && (
         <SetScheduleDialog
+          onClose={disableDialog}
+          onSuccess={handleMutationSuccess}
+        />
+      )}
+
+      {currentActiveDialog === 'auto-fill' && (
+        <AutoFillDialog
           onClose={disableDialog}
           onSuccess={handleMutationSuccess}
         />
