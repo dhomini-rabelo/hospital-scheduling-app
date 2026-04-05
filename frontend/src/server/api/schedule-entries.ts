@@ -1,11 +1,13 @@
 import { client } from '@/core/api-client'
 import { API_ROUTES } from '@/server/routes'
 import type {
+  AutoFillDayGapsResponse,
   AutoFillResponse,
   ProfessionRequirement,
   ScheduleEntry,
   ScheduleEntryWithAggregateData,
   ScheduleOverview,
+  SwapCandidatesResponse,
 } from '@/server/types/entities'
 
 export interface SetScheduleEntriesInput {
@@ -55,6 +57,36 @@ export async function autoFillSchedule(
   const response = await client.post<AutoFillResponse>(
     API_ROUTES.scheduleEntries.autoFill,
     data,
+  )
+  return response.data
+}
+
+export async function listSwapCandidates(
+  entryId: string,
+  teamMemberId: string,
+): Promise<SwapCandidatesResponse> {
+  const response = await client.get<SwapCandidatesResponse>(
+    API_ROUTES.scheduleEntries.swapCandidates(entryId, teamMemberId),
+  )
+  return response.data
+}
+
+export async function swapTeamMember(
+  entryId: string,
+  data: { removeTeamMemberId: string; addTeamMemberId: string },
+): Promise<{ entry: ScheduleEntry }> {
+  const response = await client.post<{ entry: ScheduleEntry }>(
+    API_ROUTES.scheduleEntries.swap(entryId),
+    data,
+  )
+  return response.data
+}
+
+export async function autoFillDayGaps(
+  entryId: string,
+): Promise<AutoFillDayGapsResponse> {
+  const response = await client.post<AutoFillDayGapsResponse>(
+    API_ROUTES.scheduleEntries.autoFillDayGaps(entryId),
   )
   return response.data
 }

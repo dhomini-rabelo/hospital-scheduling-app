@@ -171,3 +171,28 @@ export interface AutoFillResponse {
   entries: ScheduleEntry[]
   gapReport: AutoFillGapReport
 }
+
+export interface SwapCandidate {
+  teamMember: TeamMember
+  weekAssignmentCount: number
+}
+
+export interface SwapContext {
+  profession: Profession
+  specialty: Specialty | null
+}
+
+export interface SwapCandidatesResponse {
+  swapContext: SwapContext
+  candidates: SwapCandidate[]
+}
+
+export interface DayGapReport {
+  hasGaps: boolean
+  professionGaps: ProfessionGap[]
+}
+
+export interface AutoFillDayGapsResponse {
+  entry: ScheduleEntry
+  gapReport: DayGapReport
+}

@@ -19,5 +19,10 @@ export const API_ROUTES = {
     delete: (id: string) => `/schedule-entries/${id}`,
     overview: '/schedule-overview',
     autoFill: '/schedule-entries/auto-fill',
+    swapCandidates: (entryId: string, teamMemberId: string) =>
+      `/schedule-entries/${entryId}/swap-candidates/${teamMemberId}`,
+    swap: (entryId: string) => `/schedule-entries/${entryId}/swap`,
+    autoFillDayGaps: (entryId: string) =>
+      `/schedule-entries/${entryId}/auto-fill-gaps`,
   },
 } as const

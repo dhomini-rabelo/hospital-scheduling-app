@@ -4,13 +4,17 @@ import {
   type ScheduleOverviewEntry,
   formatSpecialtyLabel,
 } from '@/server/types/entities'
-import { Users } from 'lucide-react'
+import { ArrowLeftRight, Users } from 'lucide-react'
 
 interface AssignedMembersListProps {
   entries: ScheduleOverviewEntry[]
+  onSwap: (teamMemberId: string, teamMemberName: string) => void
 }
 
-export function AssignedMembersList({ entries }: AssignedMembersListProps) {
+export function AssignedMembersList({
+  entries,
+  onSwap,
+}: AssignedMembersListProps) {
   if (entries.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-8 text-center">
@@ -33,10 +37,10 @@ export function AssignedMembersList({ entries }: AssignedMembersListProps) {
             key={entry.id}
             className="flex items-center justify-between rounded-lg border border-border/40 bg-surface px-3 py-2"
           >
-            <span className="text-sm font-medium text-text-primary">
-              {entry.teamMember.name}
-            </span>
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-text-primary">
+                {entry.teamMember.name}
+              </span>
               <Badge variant="primary">
                 {PROFESSION_LABELS[entry.teamMember.profession]}
               </Badge>
@@ -44,6 +48,16 @@ export function AssignedMembersList({ entries }: AssignedMembersListProps) {
                 {formatSpecialtyLabel(entry.teamMember.specialty)}
               </Badge>
             </div>
+            <button
+              type="button"
+              className="flex h-7 w-7 items-center justify-center rounded-md text-text-tertiary transition-colors hover:bg-neutral-100 hover:text-text-secondary"
+              onClick={() =>
+                onSwap(entry.teamMember.id, entry.teamMember.name)
+              }
+              title={`Swap ${entry.teamMember.name}`}
+            >
+              <ArrowLeftRight size={14} />
+            </button>
           </div>
         ))}
       </div>
