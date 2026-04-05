@@ -1,4 +1,5 @@
 import { errorHandler } from '@/infra/http/error-handler'
+import { autoFillDayGaps } from '@/infra/http/routes/auto-fill-day-gaps'
 import { autoFillSchedule } from '@/infra/http/routes/auto-fill-schedule'
 import { createScheduleRequirement } from '@/infra/http/routes/create-schedule-requirement'
 import { createTeamMembers } from '@/infra/http/routes/create-team-members'
@@ -10,8 +11,10 @@ import { enableScheduleRequirement } from '@/infra/http/routes/enable-schedule-r
 import { getScheduleOverview } from '@/infra/http/routes/get-schedule-overview'
 import { listScheduleEntries } from '@/infra/http/routes/list-schedule-entries'
 import { listScheduleRequirements } from '@/infra/http/routes/list-schedule-requirements'
+import { listSwapCandidates } from '@/infra/http/routes/list-swap-candidates'
 import { listTeamMembers } from '@/infra/http/routes/list-team-members'
 import { setScheduleEntries } from '@/infra/http/routes/set-schedule-entries'
+import { swapTeamMember } from '@/infra/http/routes/swap-team-member'
 import { updateScheduleRequirement } from '@/infra/http/routes/update-schedule-requirement'
 import { updateTeamMember } from '@/infra/http/routes/update-team-member'
 import cors from 'cors'
@@ -43,6 +46,12 @@ app.delete('/schedule-requirements/:id', deleteScheduleRequirement)
 
 // Schedule Entry routes
 app.post('/schedule-entries/auto-fill', autoFillSchedule)
+app.get(
+  '/schedule-entries/:entryId/swap-candidates/:teamMemberId',
+  listSwapCandidates,
+)
+app.post('/schedule-entries/:entryId/swap', swapTeamMember)
+app.post('/schedule-entries/:entryId/auto-fill-gaps', autoFillDayGaps)
 app.put('/schedule-entries', setScheduleEntries)
 app.get('/schedule-entries', listScheduleEntries)
 app.delete('/schedule-entries/:id', deleteScheduleEntry)

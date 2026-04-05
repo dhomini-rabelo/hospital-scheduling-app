@@ -1,4 +1,8 @@
-import { StructureData } from '@/domain/entities/schedule-entry/schedule-entry'
+import {
+  ScheduleEntry,
+  StructureData,
+} from '@/domain/entities/schedule-entry/schedule-entry'
+import { ScheduleEntryTeamMemberMap } from '@/domain/entities/schedule-entry/schedule-entry-team-member-map'
 import {
   Profession,
   PROFESSION_SPECIALTIES,
@@ -162,4 +166,49 @@ export function validateTeamMembersAgainstStructure(
       }
     }
   }
+}
+
+export function validateTeamMemberIsAssignedToEntry(
+  entry: ScheduleEntry,
+  teamMemberId: string,
+): ScheduleEntryTeamMemberMap {
+  const mapEntity = entry.props.teamMembers
+    .getItems()
+    .find((item) => item.props.teamMemberId === teamMemberId)
+
+  if (!mapEntity) {
+    throw new ValidationError({
+      errorField: 'teamMemberId',
+      code: 'TEAM_MEMBER_NOT_ASSIGNED_TO_ENTRY',
+      variables: [teamMemberId],
+    })
+  }
+
+  return mapEntity
+}
+
+export function determineIsSpecialtySlot(
+  structure: Readonly<StructureData>,
+  assignedTeamMemberIds: string[],
+  allProfessionTeamMembers: TeamMember[],
+  targetMember: TeamMember,
+): boolean {
+  const profReq = structure.find(
+    (p) => p.profession === targetMember.props.profession,
+  )
+  if (!profReq) return false
+
+  const specReq = profReq.specialtyRequirements.find(
+    (s) => s.specialty === targetMember.props.specialty,
+  )
+  if (!specReq) return false
+
+  const assignedWithSpecialty = allProfessionTeamMembers.filter(
+    (tm) =>
+      tm.id !== targetMember.id &&
+      tm.props.specialty === targetMember.props.specialty &&
+      assignedTeamMemberIds.includes(tm.id),
+  ).length
+
+  return assignedWithSpecialty < specReq.requiredCount
 }

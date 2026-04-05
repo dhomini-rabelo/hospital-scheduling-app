@@ -45,14 +45,14 @@ export function getDateReferencesForDate(dateStr: string): string[] {
   return references
 }
 
-function formatDateToISO(date: Date): string {
+export function formatDateToISO(date: Date): string {
   const year = date.getUTCFullYear()
   const month = String(date.getUTCMonth() + 1).padStart(2, '0')
   const day = String(date.getUTCDate()).padStart(2, '0')
   return `${year}-${month}-${day}`
 }
 
-function getMondayOfWeek(date: Date): Date {
+export function getMondayOfWeek(date: Date): Date {
   const result = new Date(date)
   const dayOfWeek = result.getUTCDay()
   const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1
@@ -60,7 +60,7 @@ function getMondayOfWeek(date: Date): Date {
   return result
 }
 
-function getSundayOfWeek(date: Date): Date {
+export function getSundayOfWeek(date: Date): Date {
   const monday = getMondayOfWeek(date)
   const sunday = new Date(monday)
   sunday.setUTCDate(monday.getUTCDate() + 6)
