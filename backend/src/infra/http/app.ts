@@ -1,4 +1,5 @@
 import { errorHandler } from '@/infra/http/error-handler'
+import { autoFillSchedule } from '@/infra/http/routes/auto-fill-schedule'
 import { createScheduleRequirement } from '@/infra/http/routes/create-schedule-requirement'
 import { createTeamMembers } from '@/infra/http/routes/create-team-members'
 import { deleteScheduleEntry } from '@/infra/http/routes/delete-schedule-entry'
@@ -41,6 +42,7 @@ app.patch('/schedule-requirements/:id/disable', disableScheduleRequirement)
 app.delete('/schedule-requirements/:id', deleteScheduleRequirement)
 
 // Schedule Entry routes
+app.post('/schedule-entries/auto-fill', autoFillSchedule)
 app.put('/schedule-entries', setScheduleEntries)
 app.get('/schedule-entries', listScheduleEntries)
 app.delete('/schedule-entries/:id', deleteScheduleEntry)

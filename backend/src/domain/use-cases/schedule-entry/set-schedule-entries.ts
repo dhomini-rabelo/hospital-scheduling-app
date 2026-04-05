@@ -1,19 +1,14 @@
 import { ScheduleEntryRepository } from '@/adapters/repositories/schedule-entry-repository'
 import { ScheduleRequirementRepository } from '@/adapters/repositories/schedule-requirement-repository'
-import { TeamMemberRepository } from '@/adapters/repositories/team-member-repository'
 import {
   ScheduleEntry,
   StructureData,
   StructureDataJsonField,
 } from '@/domain/entities/schedule-entry/schedule-entry'
 import { ScheduleEntryScheduleRequirementMap } from '@/domain/entities/schedule-entry/schedule-entry-schedule-requirement-map'
-import { ScheduleEntryTeamMemberMap } from '@/domain/entities/schedule-entry/schedule-entry-team-member-map'
 import { ScheduleEntryScheduleRequirementMapWatchedList } from '@/domain/entities/schedule-entry/watched-lists/schedule-entry-schedule-requirement-map'
 import { ScheduleEntryTeamMemberMapWatchedList } from '@/domain/entities/schedule-entry/watched-lists/schedule-entry-team-member-map'
-import {
-  validateStructureData,
-  validateTeamMembersAgainstStructure,
-} from '@/domain/use-cases/utils/schedule-entry'
+import { validateStructureData } from '@/domain/use-cases/utils/schedule-entry'
 import { validateDatesInSetRange } from '@/domain/utils/schedule'
 import { ValidationError } from '@/modules/domain/errors'
 import { UseCase } from '@/modules/domain/use-case'
@@ -21,7 +16,6 @@ import { UseCase } from '@/modules/domain/use-case'
 interface Payload {
   dates: string[]
   structure: StructureData
-  teamMemberIds: string[]
   scheduleRequirementIds: string[]
 }
 
@@ -32,28 +26,12 @@ interface Response {
 export class SetScheduleEntriesUseCase implements UseCase<Response> {
   constructor(
     private scheduleEntryRepository: ScheduleEntryRepository,
-    private teamMemberRepository: TeamMemberRepository,
     private scheduleRequirementRepository: ScheduleRequirementRepository,
   ) {}
 
   async execute(payload: Payload): Promise<Response> {
     validateDatesInSetRange(payload.dates)
     validateStructureData(payload.structure)
-
-    const allTeamMembers = await this.teamMemberRepository.findAll()
-    const resolvedTeamMembers = payload.teamMemberIds.map((id) => {
-      const teamMember = allTeamMembers.find((tm) => tm.id === id)
-      if (!teamMember) {
-        throw new ValidationError({
-          errorField: 'teamMemberIds',
-          code: 'TEAM_MEMBER_NOT_FOUND',
-          variables: [id],
-        })
-      }
-      return teamMember
-    })
-
-    validateTeamMembersAgainstStructure(resolvedTeamMembers, payload.structure)
 
     const allScheduleRequirements =
       await this.scheduleRequirementRepository.findAll()
@@ -74,15 +52,6 @@ export class SetScheduleEntriesUseCase implements UseCase<Response> {
       const existingEntry = await this.scheduleEntryRepository.findByDate(date)
 
       if (existingEntry) {
-        const teamMemberMapEntities = payload.teamMemberIds.map(
-          (teamMemberId) =>
-            ScheduleEntryTeamMemberMap.create({
-              scheduleEntryId: existingEntry.id,
-              teamMemberId,
-            }),
-        )
-        existingEntry.props.teamMembers.update(teamMemberMapEntities)
-
         const requirementMapEntities = payload.scheduleRequirementIds.map(
           (scheduleRequirementId) =>
             ScheduleEntryScheduleRequirementMap.create({
@@ -96,20 +65,11 @@ export class SetScheduleEntriesUseCase implements UseCase<Response> {
           existingEntry.id,
           {
             structure: StructureDataJsonField.create(payload.structure),
-            teamMembers: existingEntry.props.teamMembers,
             scheduleRequirements: existingEntry.props.scheduleRequirements,
           },
         )
         items.push(updatedEntry)
       } else {
-        const teamMemberMapEntities = payload.teamMemberIds.map(
-          (teamMemberId) =>
-            ScheduleEntryTeamMemberMap.create({
-              scheduleEntryId: '',
-              teamMemberId,
-            }),
-        )
-
         const requirementMapEntities = payload.scheduleRequirementIds.map(
           (scheduleRequirementId) =>
             ScheduleEntryScheduleRequirementMap.create({
@@ -121,9 +81,7 @@ export class SetScheduleEntriesUseCase implements UseCase<Response> {
         const createdEntry = await this.scheduleEntryRepository.create({
           date,
           structure: StructureDataJsonField.create(payload.structure),
-          teamMembers: new ScheduleEntryTeamMemberMapWatchedList(
-            teamMemberMapEntities,
-          ),
+          teamMembers: new ScheduleEntryTeamMemberMapWatchedList([]),
           scheduleRequirements:
             new ScheduleEntryScheduleRequirementMapWatchedList(
               requirementMapEntities,

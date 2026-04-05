@@ -238,40 +238,45 @@ export class PrismaScheduleEntryRepository implements ScheduleEntryRepository {
     id: string,
     input: UpdateScheduleEntryInput,
   ): Promise<ScheduleEntry> {
-    const removedTeamMembers = input.teamMembers.getRemovedItems()
-    const newTeamMembers = input.teamMembers.getNewItems()
-    const removedRequirements = input.scheduleRequirements.getRemovedItems()
-    const newRequirements = input.scheduleRequirements.getNewItems()
-
     await prisma.$transaction(async (tx) => {
-      if (removedTeamMembers.length > 0) {
-        await tx.scheduleEntryTeamMemberMap.deleteMany({
-          where: { id: { in: removedTeamMembers.map((item) => item.id) } },
-        })
+      if (input.teamMembers) {
+        const removedTeamMembers = input.teamMembers.getRemovedItems()
+        const newTeamMembers = input.teamMembers.getNewItems()
+
+        if (removedTeamMembers.length > 0) {
+          await tx.scheduleEntryTeamMemberMap.deleteMany({
+            where: { id: { in: removedTeamMembers.map((item) => item.id) } },
+          })
+        }
+
+        if (newTeamMembers.length > 0) {
+          await tx.scheduleEntryTeamMemberMap.createMany({
+            data: newTeamMembers.map((item) => ({
+              scheduleEntryId: id,
+              teamMemberId: item.props.teamMemberId,
+            })),
+          })
+        }
       }
 
-      if (newTeamMembers.length > 0) {
-        await tx.scheduleEntryTeamMemberMap.createMany({
-          data: newTeamMembers.map((item) => ({
-            scheduleEntryId: id,
-            teamMemberId: item.props.teamMemberId,
-          })),
-        })
-      }
+      if (input.scheduleRequirements) {
+        const removedRequirements = input.scheduleRequirements.getRemovedItems()
+        const newRequirements = input.scheduleRequirements.getNewItems()
 
-      if (removedRequirements.length > 0) {
-        await tx.scheduleEntryScheduleRequirementMap.deleteMany({
-          where: { id: { in: removedRequirements.map((item) => item.id) } },
-        })
-      }
+        if (removedRequirements.length > 0) {
+          await tx.scheduleEntryScheduleRequirementMap.deleteMany({
+            where: { id: { in: removedRequirements.map((item) => item.id) } },
+          })
+        }
 
-      if (newRequirements.length > 0) {
-        await tx.scheduleEntryScheduleRequirementMap.createMany({
-          data: newRequirements.map((item) => ({
-            scheduleEntryId: id,
-            scheduleRequirementId: item.props.scheduleRequirementId,
-          })),
-        })
+        if (newRequirements.length > 0) {
+          await tx.scheduleEntryScheduleRequirementMap.createMany({
+            data: newRequirements.map((item) => ({
+              scheduleEntryId: id,
+              scheduleRequirementId: item.props.scheduleRequirementId,
+            })),
+          })
+        }
       }
 
       await tx.scheduleEntry.update({
@@ -290,6 +295,12 @@ export class PrismaScheduleEntryRepository implements ScheduleEntryRepository {
 
   async delete(id: string): Promise<void> {
     await prisma.scheduleEntry.delete({ where: { id } })
+  }
+
+  async deleteByDateRange(startDate: string, endDate: string): Promise<void> {
+    await prisma.scheduleEntry.deleteMany({
+      where: { date: { gte: startDate, lte: endDate } },
+    })
   }
 
   async getWithAggregateData(

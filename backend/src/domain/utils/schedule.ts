@@ -97,6 +97,29 @@ export function getAllowedViewRange(): { start: string; end: string } {
   }
 }
 
+export function validateIsMonday(dateStr: string): void {
+  const date = new Date(`${dateStr}T00:00:00Z`)
+  const dayOfWeek = date.getUTCDay()
+  if (dayOfWeek !== 1) {
+    throw new ValidationError({
+      errorField: 'weekStartDate',
+      code: 'DATE_MUST_BE_A_MONDAY',
+      variables: [dateStr],
+    })
+  }
+}
+
+export function getWeekDates(mondayDate: string): string[] {
+  const monday = new Date(`${mondayDate}T00:00:00Z`)
+  const dates: string[] = []
+  for (let i = 0; i < 7; i++) {
+    const day = new Date(monday)
+    day.setUTCDate(monday.getUTCDate() + i)
+    dates.push(formatDateToISO(day))
+  }
+  return dates
+}
+
 export function validateDatesInSetRange(dates: string[]): void {
   const range = getAllowedSetRange()
 

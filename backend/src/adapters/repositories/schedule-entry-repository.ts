@@ -22,8 +22,8 @@ export type CreateScheduleEntryInput = {
 
 export type UpdateScheduleEntryInput = {
   structure: StructureDataJsonField
-  teamMembers: ScheduleEntryTeamMemberMapWatchedList
-  scheduleRequirements: ScheduleEntryScheduleRequirementMapWatchedList
+  teamMembers?: ScheduleEntryTeamMemberMapWatchedList
+  scheduleRequirements?: ScheduleEntryScheduleRequirementMapWatchedList
 }
 
 export abstract class ScheduleEntryRepository {
@@ -44,6 +44,8 @@ export abstract class ScheduleEntryRepository {
   ): Promise<ScheduleEntry>
 
   abstract delete(id: string): Promise<void>
+
+  abstract deleteByDateRange(startDate: string, endDate: string): Promise<void>
 
   abstract getWithAggregateData(
     date: string,
