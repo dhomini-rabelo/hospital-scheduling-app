@@ -1,6 +1,7 @@
 import { errorHandler } from '@/infra/http/error-handler'
 import { autoFillDayGaps } from '@/infra/http/routes/auto-fill-day-gaps'
 import { autoFillSchedule } from '@/infra/http/routes/auto-fill-schedule'
+import { chat } from '@/infra/http/routes/chat'
 import { createScheduleRequirement } from '@/infra/http/routes/create-schedule-requirement'
 import { createTeamMembers } from '@/infra/http/routes/create-team-members'
 import { deleteScheduleEntry } from '@/infra/http/routes/delete-schedule-entry'
@@ -29,6 +30,9 @@ app.use(json({ limit: '100mb' }))
 app.get('/health', (req, res) => {
   return res.status(200).json({ status: 'ok' })
 })
+
+// Chat route
+app.post('/chat', chat)
 
 // Team Member routes
 app.post('/team-members', createTeamMembers)
