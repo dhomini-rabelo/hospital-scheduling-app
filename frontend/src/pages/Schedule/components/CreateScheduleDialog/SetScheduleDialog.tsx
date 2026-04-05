@@ -10,7 +10,7 @@ import { FormProvider, useFieldArray, useForm, useWatch } from 'react-hook-form'
 import { z } from 'zod'
 import { DateSelector } from './DateSelector'
 import { RequirementSelector } from './RequirementSelector'
-import { StructureProfessionRow } from './StructureProfessionRow'
+import { ProfessionRequirementRow } from '@/layout/components/form/ProfessionRequirementRow'
 
 const specialtyRequirementSchema = z.object({
   specialty: z.string().min(1, 'Select a specialty'),
@@ -208,8 +208,9 @@ export function SetScheduleDialog({
                 Staffing Structure
               </span>
               {fields.map((field, index) => (
-                <StructureProfessionRow
+                <ProfessionRequirementRow
                   key={field.id}
+                  fieldPrefix="structure"
                   index={index}
                   onRemove={() => remove(index)}
                   isRemoveDisabled={fields.length === 1}

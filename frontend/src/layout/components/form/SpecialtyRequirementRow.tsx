@@ -1,28 +1,35 @@
 import { Input } from '@/layout/components/ui/Input'
 import { Select } from '@/layout/components/ui/Select'
 import { X } from 'lucide-react'
+import type { FieldValues } from 'react-hook-form'
 import { useFormContext } from 'react-hook-form'
-import type { SetScheduleSchema } from './SetScheduleDialog'
 
-interface StructureSpecialtyRowProps {
+interface SpecialtyRequirementRowProps {
+  fieldPrefix: string
   professionIndex: number
   specialtyIndex: number
   onRemove: () => void
   availableSpecialties: { value: string; label: string }[]
 }
 
-export function StructureSpecialtyRow({
+export function SpecialtyRequirementRow({
+  fieldPrefix,
   professionIndex,
   specialtyIndex,
   onRemove,
   availableSpecialties,
-}: StructureSpecialtyRowProps) {
-  const { register, formState } = useFormContext<SetScheduleSchema>()
+}: SpecialtyRequirementRowProps) {
+  const { register, formState } = useFormContext<FieldValues>()
 
   const fieldErrors =
-    formState.errors.structure?.[professionIndex]?.specialtyRequirements?.[
-      specialtyIndex
-    ]
+    (formState.errors[fieldPrefix] as Record<string, unknown>[] | undefined)?.[
+      professionIndex
+    ] as { specialtyRequirements?: Record<string, unknown>[] } | undefined
+
+  const specialtyErrors =
+    fieldErrors?.specialtyRequirements?.[specialtyIndex] as
+      | { specialty?: { message?: string }; requiredCount?: { message?: string } }
+      | undefined
 
   return (
     <div className="flex items-start gap-2">
@@ -31,19 +38,19 @@ export function StructureSpecialtyRow({
           options={availableSpecialties}
           placeholder="Select specialty"
           registration={register(
-            `structure.${professionIndex}.specialtyRequirements.${specialtyIndex}.specialty`,
+            `${fieldPrefix}.${professionIndex}.specialtyRequirements.${specialtyIndex}.specialty`,
           )}
-          error={fieldErrors?.specialty?.message}
+          error={specialtyErrors?.specialty?.message}
         />
         <Input
           type="number"
           placeholder="Count"
           min={1}
           registration={register(
-            `structure.${professionIndex}.specialtyRequirements.${specialtyIndex}.requiredCount`,
+            `${fieldPrefix}.${professionIndex}.specialtyRequirements.${specialtyIndex}.requiredCount`,
             { valueAsNumber: true },
           )}
-          error={fieldErrors?.requiredCount?.message}
+          error={specialtyErrors?.requiredCount?.message}
         />
       </div>
       <button

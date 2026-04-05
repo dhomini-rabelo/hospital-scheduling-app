@@ -9,9 +9,9 @@ import {
 } from '@/server/types/entities'
 import { Plus, X } from 'lucide-react'
 import { useEffect, useRef } from 'react'
+import type { FieldValues } from 'react-hook-form'
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form'
-import type { SetScheduleSchema } from './SetScheduleDialog'
-import { StructureSpecialtyRow } from './StructureSpecialtyRow'
+import { SpecialtyRequirementRow } from './SpecialtyRequirementRow'
 
 const ALL_PROFESSION_OPTIONS = Object.values(Profession).map((value) => ({
   value,
@@ -23,24 +23,26 @@ const EMPTY_SPECIALTY_ROW = {
   requiredCount: '' as unknown as number,
 }
 
-interface StructureProfessionRowProps {
+interface ProfessionRequirementRowProps {
+  fieldPrefix: string
   index: number
   onRemove: () => void
   isRemoveDisabled: boolean
   usedProfessions: string[]
 }
 
-export function StructureProfessionRow({
+export function ProfessionRequirementRow({
+  fieldPrefix,
   index,
   onRemove,
   isRemoveDisabled,
   usedProfessions,
-}: StructureProfessionRowProps) {
+}: ProfessionRequirementRowProps) {
   const { register, formState, control, setValue } =
-    useFormContext<SetScheduleSchema>()
+    useFormContext<FieldValues>()
 
-  const profession = useWatch<SetScheduleSchema>({
-    name: `structure.${index}.profession`,
+  const profession = useWatch({
+    name: `${fieldPrefix}.${index}.profession`,
   })
 
   const {
@@ -49,12 +51,12 @@ export function StructureProfessionRow({
     remove: removeSpecialty,
   } = useFieldArray({
     control,
-    name: `structure.${index}.specialtyRequirements`,
+    name: `${fieldPrefix}.${index}.specialtyRequirements`,
   })
 
   const specialtyValues = useWatch({
     control,
-    name: `structure.${index}.specialtyRequirements`,
+    name: `${fieldPrefix}.${index}.specialtyRequirements`,
   }) as { specialty: string; requiredCount: number }[] | undefined
 
   const professionOptions = ALL_PROFESSION_OPTIONS.filter(
@@ -89,12 +91,20 @@ export function StructureProfessionRow({
 
   useEffect(() => {
     if (profession && profession !== previousProfessionRef.current) {
-      setValue(`structure.${index}.specialtyRequirements`, [])
+      setValue(`${fieldPrefix}.${index}.specialtyRequirements`, [])
     }
     previousProfessionRef.current = profession
-  }, [profession, index, setValue])
+  }, [profession, index, setValue, fieldPrefix])
 
-  const fieldErrors = formState.errors.structure?.[index]
+  const fieldErrors = (
+    formState.errors[fieldPrefix] as Record<string, unknown>[] | undefined
+  )?.[index] as
+    | {
+        profession?: { message?: string }
+        requiredCount?: { message?: string }
+        specialtyRequirements?: { root?: { message?: string } }
+      }
+    | undefined
 
   return (
     <div className="rounded-xl border border-border/60 bg-surface-sunken/30 p-4">
@@ -104,7 +114,7 @@ export function StructureProfessionRow({
             label="Profession"
             options={professionOptions}
             placeholder="Select profession"
-            registration={register(`structure.${index}.profession`)}
+            registration={register(`${fieldPrefix}.${index}.profession`)}
             error={fieldErrors?.profession?.message}
           />
           <Input
@@ -113,7 +123,7 @@ export function StructureProfessionRow({
             placeholder="e.g. 5"
             min={1}
             registration={register(
-              `structure.${index}.requiredCount`,
+              `${fieldPrefix}.${index}.requiredCount`,
               { valueAsNumber: true },
             )}
             error={fieldErrors?.requiredCount?.message}
@@ -152,8 +162,9 @@ export function StructureProfessionRow({
           {specialtyFields.length > 0 && (
             <div className="flex flex-col gap-2">
               {specialtyFields.map((field, specialtyIndex) => (
-                <StructureSpecialtyRow
+                <SpecialtyRequirementRow
                   key={field.id}
+                  fieldPrefix={fieldPrefix}
                   professionIndex={index}
                   specialtyIndex={specialtyIndex}
                   onRemove={() => removeSpecialty(specialtyIndex)}
@@ -165,19 +176,9 @@ export function StructureProfessionRow({
             </div>
           )}
 
-          {(
-            fieldErrors?.specialtyRequirements as
-              | { root?: { message?: string } }
-              | undefined
-          )?.root?.message && (
+          {fieldErrors?.specialtyRequirements?.root?.message && (
             <p className="mt-2 text-xs font-medium text-error-600">
-              {
-                (
-                  fieldErrors?.specialtyRequirements as {
-                    root?: { message?: string }
-                  }
-                )?.root?.message
-              }
+              {fieldErrors.specialtyRequirements.root.message}
             </p>
           )}
         </div>

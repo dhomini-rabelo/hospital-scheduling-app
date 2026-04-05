@@ -10,7 +10,7 @@ import { Pencil, Plus } from 'lucide-react'
 import { useState } from 'react'
 import { FormProvider, useFieldArray, useForm, useWatch } from 'react-hook-form'
 import { z } from 'zod'
-import { ProfessionRequirementRow } from './ProfessionRequirementRow'
+import { ProfessionRequirementRow } from '@/layout/components/form/ProfessionRequirementRow'
 
 const specialtyRequirementSchema = z.object({
   specialty: z.string().min(1, 'Select a specialty'),
@@ -161,6 +161,7 @@ export function EditScheduleRequirementDialog({
               {fields.map((field, index) => (
                 <ProfessionRequirementRow
                   key={field.id}
+                  fieldPrefix="requirements"
                   index={index}
                   onRemove={() => remove(index)}
                   isRemoveDisabled={fields.length === 1}
