@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=development tsx watch ./src/infra/http/server.ts",
     "dev:test": "NODE_ENV=test tsx watch ./src/infra/http/server.ts",
+    "seed:fake-data": "NODE_ENV=development tsx ./src/scripts/create-fake-data.ts",
     "lint:fix": "eslint ./src --ext .ts --ignore-pattern '*.d.ts' --fix",
     "prisma:migrate": "prisma migrate dev",
     "prisma:generate": "prisma generate",
