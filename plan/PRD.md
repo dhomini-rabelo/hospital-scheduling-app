@@ -214,9 +214,9 @@ The system supports the following hospital roles:
 #### Contextual AI Entry Points
 
 * **AC-006-P**: Each main page MUST include a contextual button that opens the chat widget with a pre-filled, page-specific prompt and the textarea focused for immediate typing. The buttons and prompts are:
-  * **Team Members page**: Button labeled "Manage with AI" — opens chat with: `I want to make the following changes on the staff:\n\n - (example)`
-  * **Schedule Requirements page**: Button labeled "Configure with AI" — opens chat with: `I need the following staffing rules:\n\n - (example)`
-  * **Schedule page**: Button labeled "Schedule with AI" — opens chat with: `For the schedule of the week of [current week start date]:\n\n - (example)`
+  * **Team Members page**: Button labeled "Manage with AI" — opens chat with: `I want to make the following changes on the staff:\n\n - ` (example)
+  * **Schedule Requirements page**: Button labeled "Configure with AI" — opens chat with: `I need the following staffing rules:\n\n - ` (example)
+  * **Schedule page**: Button labeled "Schedule with AI" — opens chat with: `For the schedule of the week of [current week start date]:\n\n - ` (example)
 * **AC-006-Q**: If the chat widget is already open when a contextual button is clicked, the system MUST replace the current textarea content with the new pre-filled prompt and focus the textarea
 
 #### Real-time UI Sync

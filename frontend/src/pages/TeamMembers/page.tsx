@@ -19,7 +19,7 @@ export function TeamMembers() {
 
   function handleManageWithAI() {
     openChatWithPrompt(
-      'I want to make the following changes on the staff:\n\n - (example)',
+      'I want to make the following changes on the staff:\n\n - ',
     )
   }
 

@@ -10,9 +10,7 @@ import { SetScheduleDialog } from './components/CreateScheduleDialog/SetSchedule
 import { MiniCalendar } from './components/MiniCalendar/MiniCalendar'
 import { ScheduleOverview } from './components/ScheduleOverview/ScheduleOverview'
 import {
-  formatDateToISO,
-  getMondayOfWeek,
-  getTodayISO,
+  getTodayISO
 } from './utils/schedule-dates'
 
 interface SchedulePageState {
@@ -42,11 +40,8 @@ export function Schedule() {
   }
 
   function handleScheduleWithAI() {
-    const today = new Date()
-    today.setUTCHours(0, 0, 0, 0)
-    const weekStart = formatDateToISO(getMondayOfWeek(today))
     openChatWithPrompt(
-      `For the schedule of the week of ${weekStart}:\n\n - (example)`,
+      `Schedule update actions:\n\n -`,
     )
   }
 

@@ -21,7 +21,7 @@ export function ScheduleRequirements() {
 
   function handleConfigureWithAI() {
     openChatWithPrompt(
-      'I need the following staffing rules:\n\n - (example)',
+      'Schedule Requirements actions:\n\n -',
     )
   }
 
