@@ -64,7 +64,19 @@ Existing frontend template README:
 - Node.js 20+
 - npm 8+
 
-### 1) Install dependencies
+### 1) Clone the repository
+
+```bash
+git clone <your_repository_url>
+```
+
+### 2) Change into the project directory
+
+```bash
+cd hospital-scheduling-app
+```
+
+### 3) Install dependencies
 
 From repository root:
 
@@ -72,7 +84,7 @@ From repository root:
 npm i
 ```
 
-### 2) Configure environment variables
+### 4) Configure environment variables (Optional)
 
 The backend loads env files based on `NODE_ENV`:
 
@@ -96,7 +108,7 @@ DATABASE_URL="file:./test.db"
 GOOGLE_GENERATIVE_AI_API_KEY="your_google_generative_ai_api_key"
 ```
 
-### 3) Setup database (Prisma + SQLite)
+### 5) Setup database (Prisma + SQLite)
 
 From repository root:
 
@@ -112,7 +124,7 @@ If you only changed schema/types and do not want to run a migration, you can reg
 npm run backend:prisma:generate
 ```
 
-### 4) Optional seed data
+### 6) Seed the database (Optional)
 
 From repository root:
 
@@ -133,7 +145,7 @@ What this seed command does:
   - `weekend` requirement set
 - Creates 14 schedule entries (2 weeks, Monday to Sunday), each linked to the corresponding weekday/weekend requirement and prefilled with a structure matching that day type.
 
-### 5) Run both apps with Turborepo (recommended)
+### 7) Run both apps with Turborepo (recommended)
 
 From repository root:
 
@@ -142,6 +154,22 @@ npm run dev
 ```
 
 This starts backend and frontend in parallel.
+
+### 8) Run apps separately (Optional)
+
+Backend:
+
+```bash
+cd backend
+npm run dev
+```
+
+Frontend:
+
+```bash
+cd frontend
+npm run dev
+```
 
 ## How the Project Works
 
