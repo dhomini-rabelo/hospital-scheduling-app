@@ -66,8 +66,16 @@ Existing frontend template README:
 
 ### 1) Clone the repository
 
+- SSH
+
 ```bash
-git clone <your_repository_url>
+git clone git@github.com:dhomini-rabelo/hospital-scheduling-app.git
+```
+
+- HTTPS
+
+```bash
+git clone https://github.com/dhomini-rabelo/hospital-scheduling-app.git
 ```
 
 ### 2) Change into the project directory
