@@ -118,21 +118,17 @@ GOOGLE_GENERATIVE_AI_API_KEY="your_google_generative_ai_api_key"
 
 ### 5) Setup database (Prisma + SQLite)
 
-From repository root:
-
 ```bash
 npm run backend:prisma:migrate
 ```
 
-`prisma migrate dev` already triggers Prisma Client generation, so running `generate` is not required in the normal setup flow.
-
-If you only changed schema/types and do not want to run a migration, you can regenerate the client explicitly:
+### 6) Generate Prisma client
 
 ```bash
 npm run backend:prisma:generate
 ```
 
-### 6) Seed the database (Optional)
+### 7) Seed the database (Recommended)
 
 From repository root:
 
@@ -153,7 +149,7 @@ What this seed command does:
   - `weekend` requirement set
 - Creates 14 schedule entries (2 weeks, Monday to Sunday), each linked to the corresponding weekday/weekend requirement and prefilled with a structure matching that day type.
 
-### 7) Run both apps with Turborepo (recommended)
+### 8) Run both apps with Turborepo (recommended)
 
 From repository root:
 
@@ -163,7 +159,7 @@ npm run dev
 
 This starts backend and frontend in parallel.
 
-### 8) Run apps separately (Optional)
+### 9) Run apps separately (Optional)
 
 Backend:
 
