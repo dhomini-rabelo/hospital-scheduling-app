@@ -7,6 +7,15 @@
     "check-types": {
       "dependsOn": ["^check-types"]
     },
+    "prisma:generate": {
+      "cache": false
+    },
+    "prisma:migrate": {
+      "cache": false
+    },
+    "seed:fake-data": {
+      "cache": false
+    },
     "dev": {
       "persistent": true,
       "cache": false

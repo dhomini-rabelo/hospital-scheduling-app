@@ -7,6 +7,9 @@
   "packageManager": "npm@8.5.0",
   "scripts": {
     "dev": "turbo dev",
+    "backend:prisma:migrate": "turbo run prisma:migrate --filter=backend",
+    "backend:prisma:generate": "turbo run prisma:generate --filter=backend",
+    "backend:seed:fake-data": "turbo run seed:fake-data --filter=backend",
     "backend:lint:fix": "eslint ./ --ext .ts --ignore-pattern ./frontend --ignore-pattern '*.d.ts' --fix",
     "backend:type-check": "tsc --noEmit --project tsconfig.json"
   },
