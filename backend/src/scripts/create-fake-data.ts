@@ -136,62 +136,162 @@ async function persistTeamMembers(
 ): Promise<TeamMember[]> {
   return teamMemberRepository.createMany([
     {
-      name: 'Dr. Sofia Ramos',
+      name: 'Dr. John Smith',
       profession: Profession.DOCTOR,
       specialty: DoctorSpecialty.EMERGENCY,
     },
     {
-      name: 'Dr. Lucas Vieira',
+      name: 'Dr. Michael Johnson',
       profession: Profession.DOCTOR,
       specialty: DoctorSpecialty.CARDIOLOGY,
     },
     {
-      name: 'Dr. Helena Costa',
+      name: 'Dr. Sarah Williams',
       profession: Profession.DOCTOR,
       specialty: DoctorSpecialty.PEDIATRICS,
     },
     {
-      name: 'Ana Martins',
+      name: 'Jennifer Anderson',
       profession: Profession.NURSE,
       specialty: NurseSpecialty.ICU,
     },
     {
-      name: 'Mariana Alves',
+      name: 'Emily Taylor',
       profession: Profession.NURSE,
       specialty: NurseSpecialty.EMERGENCY,
     },
     {
-      name: 'Paulo Mendes',
+      name: 'David Martinez',
       profession: Profession.NURSE,
       specialty: NurseSpecialty.GENERAL_WARD,
     },
     {
-      name: 'Carla Pires',
+      name: 'Lisa Brown',
       profession: Profession.NURSE,
       specialty: NurseSpecialty.PEDIATRIC,
     },
     {
-      name: 'Rafael Nunes',
+      name: 'James Miller',
       profession: Profession.TECHNICIAN,
       specialty: TechnicianSpecialty.LAB,
     },
     {
-      name: 'Bruna Rocha',
+      name: 'Amanda Davis',
       profession: Profession.TECHNICIAN,
       specialty: TechnicianSpecialty.RADIOLOGY,
     },
     {
-      name: 'Joao Teixeira',
+      name: 'Christopher Wilson',
       profession: Profession.SUPPORT_STAFF,
       specialty: SupportStaffSpecialty.RECEPTIONIST,
     },
     {
-      name: 'Laura Batista',
+      name: 'Rebecca Garcia',
       profession: Profession.SUPPORT_STAFF,
       specialty: SupportStaffSpecialty.SECURITY,
     },
     {
-      name: 'Renata Lima',
+      name: 'Daniel Rodriguez',
+      profession: Profession.SUPPORT_STAFF,
+      specialty: SupportStaffSpecialty.CLEANING,
+    },
+    {
+      name: 'Dr. Robert Lee',
+      profession: Profession.DOCTOR,
+      specialty: DoctorSpecialty.EMERGENCY,
+    },
+    {
+      name: 'Dr. Patricia Thomas',
+      profession: Profession.DOCTOR,
+      specialty: DoctorSpecialty.CARDIOLOGY,
+    },
+    {
+      name: 'Michelle White',
+      profession: Profession.NURSE,
+      specialty: NurseSpecialty.ICU,
+    },
+    {
+      name: 'Jessica Harris',
+      profession: Profession.NURSE,
+      specialty: NurseSpecialty.EMERGENCY,
+    },
+    {
+      name: 'Matthew Clark',
+      profession: Profession.NURSE,
+      specialty: NurseSpecialty.GENERAL_WARD,
+    },
+    {
+      name: 'Ashley Lewis',
+      profession: Profession.TECHNICIAN,
+      specialty: TechnicianSpecialty.LAB,
+    },
+    {
+      name: 'Kevin Walker',
+      profession: Profession.TECHNICIAN,
+      specialty: TechnicianSpecialty.RADIOLOGY,
+    },
+    {
+      name: 'Nicole Hall',
+      profession: Profession.SUPPORT_STAFF,
+      specialty: SupportStaffSpecialty.RECEPTIONIST,
+    },
+    {
+      name: 'Brandon Allen',
+      profession: Profession.SUPPORT_STAFF,
+      specialty: SupportStaffSpecialty.SECURITY,
+    },
+    {
+      name: 'Stephanie Young',
+      profession: Profession.SUPPORT_STAFF,
+      specialty: SupportStaffSpecialty.CLEANING,
+    },
+    {
+      name: 'Dr. Paul King',
+      profession: Profession.DOCTOR,
+      specialty: DoctorSpecialty.PEDIATRICS,
+    },
+    {
+      name: 'Dr. Susan Wright',
+      profession: Profession.DOCTOR,
+      specialty: DoctorSpecialty.EMERGENCY,
+    },
+    {
+      name: 'Karen Lopez',
+      profession: Profession.NURSE,
+      specialty: NurseSpecialty.ICU,
+    },
+    {
+      name: 'Nancy Hill',
+      profession: Profession.NURSE,
+      specialty: NurseSpecialty.PEDIATRIC,
+    },
+    {
+      name: 'Ryan Scott',
+      profession: Profession.NURSE,
+      specialty: NurseSpecialty.GENERAL_WARD,
+    },
+    {
+      name: 'Megan Green',
+      profession: Profession.TECHNICIAN,
+      specialty: TechnicianSpecialty.LAB,
+    },
+    {
+      name: 'Jason Adams',
+      profession: Profession.TECHNICIAN,
+      specialty: TechnicianSpecialty.RADIOLOGY,
+    },
+    {
+      name: 'Samantha Nelson',
+      profession: Profession.SUPPORT_STAFF,
+      specialty: SupportStaffSpecialty.RECEPTIONIST,
+    },
+    {
+      name: 'Timothy Carter',
+      profession: Profession.SUPPORT_STAFF,
+      specialty: SupportStaffSpecialty.SECURITY,
+    },
+    {
+      name: 'Brittany Mitchell',
       profession: Profession.SUPPORT_STAFF,
       specialty: SupportStaffSpecialty.CLEANING,
     },
