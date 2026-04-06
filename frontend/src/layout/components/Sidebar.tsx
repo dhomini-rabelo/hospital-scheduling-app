@@ -14,7 +14,7 @@ const NAV_ITEMS = [
 
 export function Sidebar() {
   return (
-    <aside className="flex h-screen w-64 shrink-0 flex-col bg-neutral-900">
+    <aside className="flex h-full w-64 shrink-0 flex-col bg-neutral-900">
       <div className="flex items-center gap-3 px-6 py-7">
         <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-500">
           <Calendar size={18} className="text-white" />
